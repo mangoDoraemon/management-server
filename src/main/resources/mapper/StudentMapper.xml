@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.StudentMapper" >
+  <resultMap id="BaseResultMap" type="com.entity.Student" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="student_number" property="studentNumber" jdbcType="VARCHAR" />
+    <result column="student_name" property="studentName" jdbcType="VARCHAR" />
+    <result column="student_class" property="studentClass" jdbcType="VARCHAR" />
+    <result column="student_email" property="studentEmail" jdbcType="VARCHAR" />
+    <result column="student_college" property="studentCollege" jdbcType="VARCHAR" />
+    <result column="student_year" property="studentYear" jdbcType="VARCHAR" />
+    <result column="student_phone" property="studentPhone" jdbcType="VARCHAR" />
+    <result column="student_information" property="studentInformation" jdbcType="VARCHAR" />
+    <result column="teacher_number" property="teacherNumber" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="manage_time" property="manageTime" jdbcType="TIMESTAMP" />
+    <result column="manage_user" property="manageUser" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="subject_id" property="subjectId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, student_number, student_name, student_class, student_email, student_college, 
+    student_year, student_phone, student_information, teacher_number, remark, manage_time, 
+    manage_user, status, subject_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.entity.StudentExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from student_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.entity.StudentExample" >
+    delete from student_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.entity.Student" >
+    insert into student_info (id, student_number, student_name, 
+      student_class, student_email, student_college, 
+      student_year, student_phone, student_information, 
+      teacher_number, remark, manage_time, 
+      manage_user, status, subject_id
+      )
+    values (#{id,jdbcType=VARCHAR}, #{studentNumber,jdbcType=VARCHAR}, #{studentName,jdbcType=VARCHAR}, 
+      #{studentClass,jdbcType=VARCHAR}, #{studentEmail,jdbcType=VARCHAR}, #{studentCollege,jdbcType=VARCHAR}, 
+      #{studentYear,jdbcType=VARCHAR}, #{studentPhone,jdbcType=VARCHAR}, #{studentInformation,jdbcType=VARCHAR}, 
+      #{teacherNumber,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{manageTime,jdbcType=TIMESTAMP}, 
+      #{manageUser,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{subjectId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.entity.Student" >
+    insert into student_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="studentNumber != null" >
+        student_number,
+      </if>
+      <if test="studentName != null" >
+        student_name,
+      </if>
+      <if test="studentClass != null" >
+        student_class,
+      </if>
+      <if test="studentEmail != null" >
+        student_email,
+      </if>
+      <if test="studentCollege != null" >
+        student_college,
+      </if>
+      <if test="studentYear != null" >
+        student_year,
+      </if>
+      <if test="studentPhone != null" >
+        student_phone,
+      </if>
+      <if test="studentInformation != null" >
+        student_information,
+      </if>
+      <if test="teacherNumber != null" >
+        teacher_number,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="manageTime != null" >
+        manage_time,
+      </if>
+      <if test="manageUser != null" >
+        manage_user,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="subjectId != null" >
+        subject_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="studentNumber != null" >
+        #{studentNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="studentName != null" >
+        #{studentName,jdbcType=VARCHAR},
+      </if>
+      <if test="studentClass != null" >
+        #{studentClass,jdbcType=VARCHAR},
+      </if>
+      <if test="studentEmail != null" >
+        #{studentEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="studentCollege != null" >
+        #{studentCollege,jdbcType=VARCHAR},
+      </if>
+      <if test="studentYear != null" >
+        #{studentYear,jdbcType=VARCHAR},
+      </if>
+      <if test="studentPhone != null" >
+        #{studentPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="studentInformation != null" >
+        #{studentInformation,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherNumber != null" >
+        #{teacherNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="manageTime != null" >
+        #{manageTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="manageUser != null" >
+        #{manageUser,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectId != null" >
+        #{subjectId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.entity.StudentExample" resultType="java.lang.Integer" >
+    select count(*) from student_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update student_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.studentNumber != null" >
+        student_number = #{record.studentNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.studentName != null" >
+        student_name = #{record.studentName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.studentClass != null" >
+        student_class = #{record.studentClass,jdbcType=VARCHAR},
+      </if>
+      <if test="record.studentEmail != null" >
+        student_email = #{record.studentEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.studentCollege != null" >
+        student_college = #{record.studentCollege,jdbcType=VARCHAR},
+      </if>
+      <if test="record.studentYear != null" >
+        student_year = #{record.studentYear,jdbcType=VARCHAR},
+      </if>
+      <if test="record.studentPhone != null" >
+        student_phone = #{record.studentPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.studentInformation != null" >
+        student_information = #{record.studentInformation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teacherNumber != null" >
+        teacher_number = #{record.teacherNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.manageTime != null" >
+        manage_time = #{record.manageTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.manageUser != null" >
+        manage_user = #{record.manageUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subjectId != null" >
+        subject_id = #{record.subjectId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update student_info
+    set id = #{record.id,jdbcType=VARCHAR},
+      student_number = #{record.studentNumber,jdbcType=VARCHAR},
+      student_name = #{record.studentName,jdbcType=VARCHAR},
+      student_class = #{record.studentClass,jdbcType=VARCHAR},
+      student_email = #{record.studentEmail,jdbcType=VARCHAR},
+      student_college = #{record.studentCollege,jdbcType=VARCHAR},
+      student_year = #{record.studentYear,jdbcType=VARCHAR},
+      student_phone = #{record.studentPhone,jdbcType=VARCHAR},
+      student_information = #{record.studentInformation,jdbcType=VARCHAR},
+      teacher_number = #{record.teacherNumber,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      manage_time = #{record.manageTime,jdbcType=TIMESTAMP},
+      manage_user = #{record.manageUser,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      subject_id = #{record.subjectId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

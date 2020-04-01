@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.ClassInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.entity.ClassInfo" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="class_code" property="classCode" jdbcType="VARCHAR" />
+    <result column="class_name" property="className" jdbcType="VARCHAR" />
+    <result column="auth_id" property="authId" jdbcType="VARCHAR" />
+    <result column="manage_time" property="manageTime" jdbcType="TIMESTAMP" />
+    <result column="manage_user" property="manageUser" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="college_id" property="collegeId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, class_code, class_name, auth_id, manage_time, manage_user, remark, college_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.entity.ClassInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from class_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.entity.ClassInfoExample" >
+    delete from class_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.entity.ClassInfo" >
+    insert into class_info (id, class_code, class_name, 
+      auth_id, manage_time, manage_user, 
+      remark, college_id)
+    values (#{id,jdbcType=VARCHAR}, #{classCode,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}, 
+      #{authId,jdbcType=VARCHAR}, #{manageTime,jdbcType=TIMESTAMP}, #{manageUser,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{collegeId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.entity.ClassInfo" >
+    insert into class_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="classCode != null" >
+        class_code,
+      </if>
+      <if test="className != null" >
+        class_name,
+      </if>
+      <if test="authId != null" >
+        auth_id,
+      </if>
+      <if test="manageTime != null" >
+        manage_time,
+      </if>
+      <if test="manageUser != null" >
+        manage_user,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="collegeId != null" >
+        college_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="classCode != null" >
+        #{classCode,jdbcType=VARCHAR},
+      </if>
+      <if test="className != null" >
+        #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="authId != null" >
+        #{authId,jdbcType=VARCHAR},
+      </if>
+      <if test="manageTime != null" >
+        #{manageTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="manageUser != null" >
+        #{manageUser,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="collegeId != null" >
+        #{collegeId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.entity.ClassInfoExample" resultType="java.lang.Integer" >
+    select count(*) from class_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update class_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.classCode != null" >
+        class_code = #{record.classCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.className != null" >
+        class_name = #{record.className,jdbcType=VARCHAR},
+      </if>
+      <if test="record.authId != null" >
+        auth_id = #{record.authId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.manageTime != null" >
+        manage_time = #{record.manageTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.manageUser != null" >
+        manage_user = #{record.manageUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.collegeId != null" >
+        college_id = #{record.collegeId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update class_info
+    set id = #{record.id,jdbcType=VARCHAR},
+      class_code = #{record.classCode,jdbcType=VARCHAR},
+      class_name = #{record.className,jdbcType=VARCHAR},
+      auth_id = #{record.authId,jdbcType=VARCHAR},
+      manage_time = #{record.manageTime,jdbcType=TIMESTAMP},
+      manage_user = #{record.manageUser,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      college_id = #{record.collegeId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

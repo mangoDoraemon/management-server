@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.TeacherMapper" >
+  <resultMap id="BaseResultMap" type="com.entity.Teacher" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="teacher_number" property="teacherNumber" jdbcType="VARCHAR" />
+    <result column="teacher_name" property="teacherName" jdbcType="VARCHAR" />
+    <result column="teacher_email" property="teacherEmail" jdbcType="VARCHAR" />
+    <result column="teacher_class" property="teacherClass" jdbcType="VARCHAR" />
+    <result column="teacher_collage" property="teacherCollage" jdbcType="VARCHAR" />
+    <result column="teacher_position" property="teacherPosition" jdbcType="VARCHAR" />
+    <result column="teacher_introduction" property="teacherIntroduction" jdbcType="VARCHAR" />
+    <result column="teacher_phone" property="teacherPhone" jdbcType="VARCHAR" />
+    <result column="teacher_sex" property="teacherSex" jdbcType="VARCHAR" />
+    <result column="teacher_title" property="teacherTitle" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="manage_time" property="manageTime" jdbcType="TIMESTAMP" />
+    <result column="manage_user" property="manageUser" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, teacher_number, teacher_name, teacher_email, teacher_class, teacher_collage, 
+    teacher_position, teacher_introduction, teacher_phone, teacher_sex, teacher_title, 
+    status, manage_time, manage_user, remark
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.entity.TeacherExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from teacher_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.entity.TeacherExample" >
+    delete from teacher_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.entity.Teacher" >
+    insert into teacher_info (id, teacher_number, teacher_name, 
+      teacher_email, teacher_class, teacher_collage, 
+      teacher_position, teacher_introduction, teacher_phone, 
+      teacher_sex, teacher_title, status, 
+      manage_time, manage_user, remark
+      )
+    values (#{id,jdbcType=VARCHAR}, #{teacherNumber,jdbcType=VARCHAR}, #{teacherName,jdbcType=VARCHAR}, 
+      #{teacherEmail,jdbcType=VARCHAR}, #{teacherClass,jdbcType=VARCHAR}, #{teacherCollage,jdbcType=VARCHAR}, 
+      #{teacherPosition,jdbcType=VARCHAR}, #{teacherIntroduction,jdbcType=VARCHAR}, #{teacherPhone,jdbcType=VARCHAR}, 
+      #{teacherSex,jdbcType=VARCHAR}, #{teacherTitle,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{manageTime,jdbcType=TIMESTAMP}, #{manageUser,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.entity.Teacher" >
+    insert into teacher_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="teacherNumber != null" >
+        teacher_number,
+      </if>
+      <if test="teacherName != null" >
+        teacher_name,
+      </if>
+      <if test="teacherEmail != null" >
+        teacher_email,
+      </if>
+      <if test="teacherClass != null" >
+        teacher_class,
+      </if>
+      <if test="teacherCollage != null" >
+        teacher_collage,
+      </if>
+      <if test="teacherPosition != null" >
+        teacher_position,
+      </if>
+      <if test="teacherIntroduction != null" >
+        teacher_introduction,
+      </if>
+      <if test="teacherPhone != null" >
+        teacher_phone,
+      </if>
+      <if test="teacherSex != null" >
+        teacher_sex,
+      </if>
+      <if test="teacherTitle != null" >
+        teacher_title,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="manageTime != null" >
+        manage_time,
+      </if>
+      <if test="manageUser != null" >
+        manage_user,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherNumber != null" >
+        #{teacherNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherName != null" >
+        #{teacherName,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherEmail != null" >
+        #{teacherEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherClass != null" >
+        #{teacherClass,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherCollage != null" >
+        #{teacherCollage,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherPosition != null" >
+        #{teacherPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherIntroduction != null" >
+        #{teacherIntroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherPhone != null" >
+        #{teacherPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherSex != null" >
+        #{teacherSex,jdbcType=VARCHAR},
+      </if>
+      <if test="teacherTitle != null" >
+        #{teacherTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="manageTime != null" >
+        #{manageTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="manageUser != null" >
+        #{manageUser,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.entity.TeacherExample" resultType="java.lang.Integer" >
+    select count(*) from teacher_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update teacher_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teacherNumber != null" >
+        teacher_number = #{record.teacherNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teacherName != null" >
+        teacher_name = #{record.teacherName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teacherEmail != null" >
+        teacher_email = #{record.teacherEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teacherClass != null" >
+        teacher_class = #{record.teacherClass,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teacherCollage != null" >
+        teacher_collage = #{record.teacherCollage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teacherPosition != null" >
+        teacher_position = #{record.teacherPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teacherIntroduction != null" >
+        teacher_introduction = #{record.teacherIntroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teacherPhone != null" >
+        teacher_phone = #{record.teacherPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teacherSex != null" >
+        teacher_sex = #{record.teacherSex,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teacherTitle != null" >
+        teacher_title = #{record.teacherTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.manageTime != null" >
+        manage_time = #{record.manageTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.manageUser != null" >
+        manage_user = #{record.manageUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update teacher_info
+    set id = #{record.id,jdbcType=VARCHAR},
+      teacher_number = #{record.teacherNumber,jdbcType=VARCHAR},
+      teacher_name = #{record.teacherName,jdbcType=VARCHAR},
+      teacher_email = #{record.teacherEmail,jdbcType=VARCHAR},
+      teacher_class = #{record.teacherClass,jdbcType=VARCHAR},
+      teacher_collage = #{record.teacherCollage,jdbcType=VARCHAR},
+      teacher_position = #{record.teacherPosition,jdbcType=VARCHAR},
+      teacher_introduction = #{record.teacherIntroduction,jdbcType=VARCHAR},
+      teacher_phone = #{record.teacherPhone,jdbcType=VARCHAR},
+      teacher_sex = #{record.teacherSex,jdbcType=VARCHAR},
+      teacher_title = #{record.teacherTitle,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      manage_time = #{record.manageTime,jdbcType=TIMESTAMP},
+      manage_user = #{record.manageUser,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

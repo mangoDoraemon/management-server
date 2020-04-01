@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.SubjectMapper" >
+  <resultMap id="BaseResultMap" type="com.entity.Subject" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="subject_name" property="subjectName" jdbcType="VARCHAR" />
+    <result column="release_people" property="releasePeople" jdbcType="VARCHAR" />
+    <result column="college_id" property="collegeId" jdbcType="VARCHAR" />
+    <result column="subject_content" property="subjectContent" jdbcType="VARCHAR" />
+    <result column="subject_number" property="subjectNumber" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="release_time" property="releaseTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, subject_name, release_people, college_id, subject_content, subject_number, status, 
+    remark, release_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.entity.SubjectExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from subject_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.entity.SubjectExample" >
+    delete from subject_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.entity.Subject" >
+    insert into subject_info (id, subject_name, release_people, 
+      college_id, subject_content, subject_number, 
+      status, remark, release_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{subjectName,jdbcType=VARCHAR}, #{releasePeople,jdbcType=VARCHAR}, 
+      #{collegeId,jdbcType=VARCHAR}, #{subjectContent,jdbcType=VARCHAR}, #{subjectNumber,jdbcType=INTEGER}, 
+      #{status,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{releaseTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.entity.Subject" >
+    insert into subject_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="subjectName != null" >
+        subject_name,
+      </if>
+      <if test="releasePeople != null" >
+        release_people,
+      </if>
+      <if test="collegeId != null" >
+        college_id,
+      </if>
+      <if test="subjectContent != null" >
+        subject_content,
+      </if>
+      <if test="subjectNumber != null" >
+        subject_number,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="releaseTime != null" >
+        release_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectName != null" >
+        #{subjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="releasePeople != null" >
+        #{releasePeople,jdbcType=VARCHAR},
+      </if>
+      <if test="collegeId != null" >
+        #{collegeId,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectContent != null" >
+        #{subjectContent,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectNumber != null" >
+        #{subjectNumber,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="releaseTime != null" >
+        #{releaseTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.entity.SubjectExample" resultType="java.lang.Integer" >
+    select count(*) from subject_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update subject_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subjectName != null" >
+        subject_name = #{record.subjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.releasePeople != null" >
+        release_people = #{record.releasePeople,jdbcType=VARCHAR},
+      </if>
+      <if test="record.collegeId != null" >
+        college_id = #{record.collegeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subjectContent != null" >
+        subject_content = #{record.subjectContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subjectNumber != null" >
+        subject_number = #{record.subjectNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.releaseTime != null" >
+        release_time = #{record.releaseTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update subject_info
+    set id = #{record.id,jdbcType=VARCHAR},
+      subject_name = #{record.subjectName,jdbcType=VARCHAR},
+      release_people = #{record.releasePeople,jdbcType=VARCHAR},
+      college_id = #{record.collegeId,jdbcType=VARCHAR},
+      subject_content = #{record.subjectContent,jdbcType=VARCHAR},
+      subject_number = #{record.subjectNumber,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=VARCHAR},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      release_time = #{record.releaseTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

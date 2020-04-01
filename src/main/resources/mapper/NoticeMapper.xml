@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.NoticeMapper" >
+  <resultMap id="BaseResultMap" type="com.entity.Notice" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="notice_id" property="noticeId" jdbcType="VARCHAR" />
+    <result column="notice_title" property="noticeTitle" jdbcType="VARCHAR" />
+    <result column="notice_type" property="noticeType" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="notice_reading" property="noticeReading" jdbcType="INTEGER" />
+    <result column="manage_date" property="manageDate" jdbcType="TIMESTAMP" />
+    <result column="manage_user" property="manageUser" jdbcType="VARCHAR" />
+    <result column="auth_id" property="authId" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.entity.Notice" extends="BaseResultMap" >
+    <result column="notice_content" property="noticeContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, notice_id, notice_title, notice_type, status, notice_reading, manage_date, manage_user, 
+    auth_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    notice_content
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.entity.NoticeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from notice_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.entity.NoticeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from notice_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.entity.NoticeExample" >
+    delete from notice_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.entity.Notice" >
+    insert into notice_info (id, notice_id, notice_title, 
+      notice_type, status, notice_reading, 
+      manage_date, manage_user, auth_id, 
+      notice_content)
+    values (#{id,jdbcType=VARCHAR}, #{noticeId,jdbcType=VARCHAR}, #{noticeTitle,jdbcType=VARCHAR}, 
+      #{noticeType,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{noticeReading,jdbcType=INTEGER}, 
+      #{manageDate,jdbcType=TIMESTAMP}, #{manageUser,jdbcType=VARCHAR}, #{authId,jdbcType=VARCHAR}, 
+      #{noticeContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.entity.Notice" >
+    insert into notice_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="noticeId != null" >
+        notice_id,
+      </if>
+      <if test="noticeTitle != null" >
+        notice_title,
+      </if>
+      <if test="noticeType != null" >
+        notice_type,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="noticeReading != null" >
+        notice_reading,
+      </if>
+      <if test="manageDate != null" >
+        manage_date,
+      </if>
+      <if test="manageUser != null" >
+        manage_user,
+      </if>
+      <if test="authId != null" >
+        auth_id,
+      </if>
+      <if test="noticeContent != null" >
+        notice_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeId != null" >
+        #{noticeId,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeTitle != null" >
+        #{noticeTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeType != null" >
+        #{noticeType,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeReading != null" >
+        #{noticeReading,jdbcType=INTEGER},
+      </if>
+      <if test="manageDate != null" >
+        #{manageDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="manageUser != null" >
+        #{manageUser,jdbcType=VARCHAR},
+      </if>
+      <if test="authId != null" >
+        #{authId,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeContent != null" >
+        #{noticeContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.entity.NoticeExample" resultType="java.lang.Integer" >
+    select count(*) from notice_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update notice_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.noticeId != null" >
+        notice_id = #{record.noticeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.noticeTitle != null" >
+        notice_title = #{record.noticeTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.noticeType != null" >
+        notice_type = #{record.noticeType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.noticeReading != null" >
+        notice_reading = #{record.noticeReading,jdbcType=INTEGER},
+      </if>
+      <if test="record.manageDate != null" >
+        manage_date = #{record.manageDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.manageUser != null" >
+        manage_user = #{record.manageUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.authId != null" >
+        auth_id = #{record.authId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.noticeContent != null" >
+        notice_content = #{record.noticeContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update notice_info
+    set id = #{record.id,jdbcType=VARCHAR},
+      notice_id = #{record.noticeId,jdbcType=VARCHAR},
+      notice_title = #{record.noticeTitle,jdbcType=VARCHAR},
+      notice_type = #{record.noticeType,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      notice_reading = #{record.noticeReading,jdbcType=INTEGER},
+      manage_date = #{record.manageDate,jdbcType=TIMESTAMP},
+      manage_user = #{record.manageUser,jdbcType=VARCHAR},
+      auth_id = #{record.authId,jdbcType=VARCHAR},
+      notice_content = #{record.noticeContent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update notice_info
+    set id = #{record.id,jdbcType=VARCHAR},
+      notice_id = #{record.noticeId,jdbcType=VARCHAR},
+      notice_title = #{record.noticeTitle,jdbcType=VARCHAR},
+      notice_type = #{record.noticeType,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      notice_reading = #{record.noticeReading,jdbcType=INTEGER},
+      manage_date = #{record.manageDate,jdbcType=TIMESTAMP},
+      manage_user = #{record.manageUser,jdbcType=VARCHAR},
+      auth_id = #{record.authId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>
