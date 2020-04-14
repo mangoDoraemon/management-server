@@ -29,6 +29,16 @@ public class UserInfo implements Serializable {
     private String avatar;
 
     @Transient
+    private String realName;
+
+    @Transient
+    private String userEmail;
+
+    @Transient
+    private String userPhone;
+
+
+    @Transient
     private List<String> roles;
 
     @Transient
@@ -104,5 +114,29 @@ public class UserInfo implements Serializable {
 
     public void setRegisterType(String registerType) {
         this.registerType = registerType;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public String getUserPhone() {
+        return userPhone;
+    }
+
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
     }
 }

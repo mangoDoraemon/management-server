@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
     TeacherMapper teacherMapper;
 
     @Override
-    public UserInfo login(String userName, String userPassword, HttpServletRequest request) {
+    public AjaxResult login(String userName, String userPassword, HttpServletRequest request) {
         UserInfoExample userInfoExample = new UserInfoExample();
         UserInfoExample.Criteria criteria = userInfoExample.createCriteria();
 
@@ -57,9 +57,9 @@ public class UserServiceImpl implements UserService {
             session.setMaxInactiveInterval(CommonConstant.SESSION_TIMEOUT);
             session.setAttribute(CommonConstant.SESSION_USER_ID,userInfoList.get(0).getId());
 
-            return userInfoList.get(0);
+            return AjaxResult.success("登陆成功",userInfoList.get(0));
         } else {
-            return new UserInfo();
+            return AjaxResult.warn("登陆失败，请检查您的用户名或密码是否正确");
         }
 
     }
@@ -73,9 +73,13 @@ public class UserServiceImpl implements UserService {
 
                 criteria.andTeacherNumberEqualTo(user.getAuthId());
                 List<Teacher> teacherList = teacherMapper.selectByExample(teacherExample);
+                Teacher teacher=teacherList.get(0);
                 if(!CollectionUtils.isEmpty(teacherList)){
                     if(teacherList.get(0).getStatus().equals(CommonConstant.STATUS_REGISTER)){
                         return AjaxResult.warn("该账户已被注册，请联系管理员");
+                    }else {
+                         teacher.setStatus("1111");
+                         teacherMapper.updateByExampleSelective(teacher,teacherExample);
                     }
                 }else {
                     return AjaxResult.warn("您输入的工号不匹配，请确认");
@@ -87,12 +91,16 @@ public class UserServiceImpl implements UserService {
 
                 criteria.andStudentNumberEqualTo(user.getAuthId());
                 List<Student> studentList =studentMapper.selectByExample(studentExample);
+                Student student=studentList.get(0);
                 if(!CollectionUtils.isEmpty(studentList)){
                     if(studentList.get(0).getStatus().equals(CommonConstant.STATUS_REGISTER)){
                         return AjaxResult.warn("该账户已被注册，请联系管理员");
                     }else {
-                        return AjaxResult.warn("您输入的学号不匹配，请确认");
+                         student.setStatus("1111");
+                         studentMapper.updateByExampleSelective(student,studentExample);
                     }
+                }else {
+                    return AjaxResult.warn("您输入的学号不匹配，请确认");
                 }
             }
         }
@@ -114,7 +122,7 @@ public class UserServiceImpl implements UserService {
         role.setId(UUID.randomUUID().toString());
         role.setUserId(user.getId());
         roleMapper.insertSelective(role);
-        return AjaxResult.success("修改成功");
+        return AjaxResult.success("注册成功");
     }
 
     @Override
@@ -146,5 +154,18 @@ public class UserServiceImpl implements UserService {
             return userInfo;
         }
         return new UserInfo();
+    }
+
+    @Override
+    public AjaxResult modify(UserInfo userInfo, HttpServletRequest request) {
+        if(userInfo != null){
+            UserInfoExample userInfoExample = new UserInfoExample();
+            userInfoExample.createCriteria().andAuthIdEqualTo((String) request.getSession().getAttribute(CommonConstant.SESSION_USER_ID));
+            userMapper.updateByExampleSelective(userInfo,userInfoExample);
+            return AjaxResult.success("修改信息成功");
+        }else {
+            return AjaxResult.warn("修改信息失败，请稍后再试！");
+        }
+
     }
 }

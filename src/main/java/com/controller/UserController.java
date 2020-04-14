@@ -26,7 +26,7 @@ public class UserController {
      * @return
      */
     @PutMapping("/login")
-    public UserInfo login(@RequestBody UserInfo user, HttpServletRequest request){
+    public AjaxResult login(@RequestBody UserInfo user, HttpServletRequest request){
         return userService.login(user.getUserName(), user.getUserPassword(), request);
     }
 
@@ -35,10 +35,20 @@ public class UserController {
      * @param user
      * @return
      */
-    @PostMapping("/user")
+    @PostMapping("/register")
     public AjaxResult register(@RequestBody UserInfo user){
-
         return userService.register(user);
+    }
+
+    /**
+     * 修改用户信息
+     * @param userInfo
+     * @param request
+     * @return
+     */
+    @PutMapping("/modify")
+    public AjaxResult modify(@RequestBody UserInfo userInfo,HttpServletRequest request){
+        return userService.modify(userInfo,request);
     }
 
     /**

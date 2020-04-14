@@ -10,11 +10,13 @@ import javax.servlet.http.HttpServletRequest;
  * @Date: 2020/3/27 16:23
  */
 public interface UserService {
-    UserInfo login(String userName, String userPassword, HttpServletRequest request);
+    AjaxResult login(String userName, String userPassword, HttpServletRequest request);
 
     AjaxResult register(UserInfo user);
 
     void logout(HttpServletRequest request);
 
     UserInfo getUserInfoByToken(String token);
+
+    AjaxResult modify(UserInfo userInfo, HttpServletRequest request);
 }
