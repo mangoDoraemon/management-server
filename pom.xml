@@ -114,6 +114,20 @@
             <version>${commons-lang.version}</version>
         </dependency>
 
+        <!-- EXCEL-->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.17</version>
+        </dependency>
+
+        <!--io常用工具类 -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.4</version>
+        </dependency>
+
         <!--   StringUtils   -->
         <dependency>
             <groupId>org.apache.commons</groupId>

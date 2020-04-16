@@ -1,6 +1,7 @@
 package com.service;
 
 import com.entity.UserInfo;
+import com.github.pagehelper.PageInfo;
 import com.util.AjaxResult;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,4 +20,6 @@ public interface UserService {
     UserInfo getUserInfoByToken(String token);
 
     AjaxResult modify(UserInfo userInfo, HttpServletRequest request);
+
+    PageInfo fetchUserInfoData(Integer page, Integer limit, String fuzzy, String userName, String authId);
 }

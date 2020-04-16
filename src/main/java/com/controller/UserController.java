@@ -1,12 +1,17 @@
 package com.controller;
 
+import com.dao.UserInfoMapper;
 import com.entity.UserInfo;
+import com.github.pagehelper.PageInfo;
 import com.service.UserService;
 import com.util.AjaxResult;
+import com.util.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @Author: wangjingyuan
@@ -18,6 +23,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Resource
+    private UserInfoMapper userInfoMapper;
 
     /**
      * 用户登陆
@@ -68,5 +76,30 @@ public class UserController {
     @GetMapping("/token")
     public UserInfo getInfoByToken(@RequestParam String token){
         return userService.getUserInfoByToken(token);
+    }
+
+    /**
+     * 查询用户信息
+     * @param page
+     * @param limit
+     * @param fuzzy
+     * @param userName
+     * @param authId
+     * @return
+     */
+    @GetMapping("/fetchUser")
+    public PageInfo fetchUserInfoData(@RequestParam(required = false, defaultValue = "1") Integer page, @RequestParam(required = false, defaultValue = "10") Integer limit, @RequestParam(required = false) String fuzzy,
+                                         @RequestParam(required = false) String userName, @RequestParam(required = false) String authId
+    ){
+        return userService.fetchUserInfoData(page,limit,fuzzy,userName,authId);
+    }
+
+    @GetMapping ("/exportUser")
+    public AjaxResult exportUser(){
+        UserInfo userInfo = new UserInfo();
+        List<UserInfo> list = userInfoMapper.selectUserInfoAll(userInfo);
+        ExcelUtil<UserInfo> util = new ExcelUtil<UserInfo>(UserInfo.class);
+        AjaxResult ajaxResult=util.exportExcel(list, "userData");
+        return ajaxResult;
     }
 }

@@ -1,5 +1,7 @@
 package com.entity;
 
+import com.annotaion.Excel;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -16,24 +18,36 @@ public class UserInfo implements Serializable {
     @Id
     private String id;
 
+    @Excel(name = "学号/工号")
     private String authId;
 
     private String token;
 
+    @Excel(name = "用户账号")
     private String userName;
 
+    @Excel(name = "用户密码")
     private String userPassword;
 
     private String status;
 
     private String avatar;
 
+    @Excel(name = "个人简介")
+    private String introduction;
+
+    @Transient
+    private String fuzzy;
+
+    @Excel(name = "姓名")
     @Transient
     private String realName;
 
+    @Excel(name = "邮箱")
     @Transient
     private String userEmail;
 
+    @Excel(name = "联系方式")
     @Transient
     private String userPhone;
 
@@ -138,5 +152,21 @@ public class UserInfo implements Serializable {
 
     public void setUserPhone(String userPhone) {
         this.userPhone = userPhone;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
+
+    public String getFuzzy() {
+        return fuzzy;
+    }
+
+    public void setFuzzy(String fuzzy) {
+        this.fuzzy = fuzzy;
     }
 }

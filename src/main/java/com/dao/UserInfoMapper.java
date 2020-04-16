@@ -22,4 +22,6 @@ public interface UserInfoMapper {
     int updateByExampleSelective(@Param("record") UserInfo record, @Param("example") UserInfoExample example);
 
     int updateByExample(@Param("record") UserInfo record, @Param("example") UserInfoExample example);
+
+    List<UserInfo> selectUserInfoAll(UserInfo userInfo);
 }

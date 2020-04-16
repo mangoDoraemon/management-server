@@ -9,6 +9,7 @@
     <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+    <result column="introduction" property="introduction" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -69,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, auth_id, token, user_name, user_password, status, avatar
+    id, auth_id, token, user_name, user_password, status, avatar,introduction
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.entity.UserInfoExample" >
     select
@@ -154,6 +155,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+
   <update id="updateByExampleSelective" parameterType="map" >
     update user_info
     <set >
@@ -196,4 +198,32 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+
+  <select id="selectUserInfoAll" resultType="com.entity.UserInfo">
+    select u.*,
+    IFNULL(s.student_name,t.teacher_name) as realName,
+    IFNULL(s.student_email,t.teacher_email) as userEmail,
+    IFNULL(s.student_phone,t.teacher_phone) as userPhone
+    from user_info u
+    left join student_info s on u.auth_id = s.student_number
+    left join teacher_info t on u.auth_id = t.teacher_number
+    where u.status = '0000'
+    <if test="fuzzy !=null and fuzzy!=''">
+      and u.auth_id LIKE concat(concat('%',#{fuzzy}),'%')
+      or u.user_name LIKE concat(concat('%',#{fuzzy}),'%')
+      or introduction LIKE concat(concat('%',#{fuzzy}),'%')
+      or s.student_name like concat(concat('%',#{fuzzy}),'%')
+      or t.teacher_name like concat(concat('%',#{fuzzy}),'%')
+    </if>
+
+    <if test="userName != null and userName != ''" >
+      AND user_name= #{userName,jdbcType=VARCHAR}
+    </if>
+
+    <if test="authId != null and authId != ''" >
+      AND auth_id= #{authId,jdbcType=VARCHAR}
+    </if>
+
+
+  </select>
 </mapper>

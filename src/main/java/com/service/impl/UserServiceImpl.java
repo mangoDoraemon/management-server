@@ -6,6 +6,8 @@ import com.dao.StudentMapper;
 import com.dao.TeacherMapper;
 import com.dao.UserInfoMapper;
 import com.entity.*;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.service.UserService;
 import com.util.AjaxResult;
 import com.util.Md5Encrypt;
@@ -167,5 +169,22 @@ public class UserServiceImpl implements UserService {
             return AjaxResult.warn("修改信息失败，请稍后再试！");
         }
 
+    }
+
+    @Override
+    public PageInfo fetchUserInfoData(Integer page, Integer limit, String fuzzy, String userName, String authId) {
+        PageHelper.startPage(page,limit);
+        UserInfo userInfo=new UserInfo();
+        if(!StringUtils.isEmpty(fuzzy)){
+            userInfo.setFuzzy(fuzzy);
+        }
+        if(!StringUtils.isEmpty(userName)){
+            userInfo.setUserName(userName);
+        }
+        if(!StringUtils.isEmpty(authId)){
+            userInfo.setAuthId(authId);
+        }
+        List<UserInfo> userInfoList = userMapper.selectUserInfoAll(userInfo);
+        return new PageInfo<>(userInfoList);
     }
 }
