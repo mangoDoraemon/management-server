@@ -12,10 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -83,9 +80,9 @@ public class CommonController {
      * 获取班级字典信息
      * @return
      */
-    @GetMapping("/common/classInfoDict")
-    public AjaxResult getClassInfoDict(){
-       List<ClassInfo> classInfoList = classInfoMapper.getClassInfoDict();
+    @GetMapping("/common/classInfoDict/{id}")
+    public AjaxResult getClassInfoDict(@PathVariable String id){
+       List<ClassInfo> classInfoList = classInfoMapper.getClassInfoDict(id);
        return AjaxResult.success(classInfoList);
     }
 

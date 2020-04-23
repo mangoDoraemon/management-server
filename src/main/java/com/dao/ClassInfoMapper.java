@@ -25,5 +25,5 @@ public interface ClassInfoMapper {
 
     List<ClassInfo> selectClassInfoAll(ClassInfo classInfo);
 
-    List<ClassInfo> getClassInfoDict();
+    List<ClassInfo> getClassInfoDict(String id);
 }

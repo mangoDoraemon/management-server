@@ -47,6 +47,12 @@ public class Student implements Serializable {
     @Transient
     private String fuzzy;
 
+    @Transient
+    private String className;
+
+    @Transient
+    private String collegeName;
+
     public String getId() {
         return id;
     }
@@ -173,5 +179,21 @@ public class Student implements Serializable {
 
     public void setFuzzy(String fuzzy) {
         this.fuzzy = fuzzy;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public String getCollegeName() {
+        return collegeName;
+    }
+
+    public void setCollegeName(String collegeName) {
+        this.collegeName = collegeName;
     }
 }

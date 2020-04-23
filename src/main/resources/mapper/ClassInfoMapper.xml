@@ -188,8 +188,8 @@
 
       </where>
     </select>
-  <select id="getClassInfoDict" resultType="com.entity.ClassInfo">
-    select * from class_info
+  <select id="getClassInfoDict" parameterType="string" resultType="com.entity.ClassInfo">
+    select * from class_info where college_id=#{id}
   </select>
 
   <update id="updateByExampleSelective" parameterType="map" >

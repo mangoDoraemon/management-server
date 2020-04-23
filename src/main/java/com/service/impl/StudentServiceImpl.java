@@ -1,6 +1,8 @@
 package com.service.impl;
 
 import com.constant.CommonConstant;
+import com.dao.ClassInfoMapper;
+import com.dao.CollegeMapper;
 import com.dao.RoleMapper;
 import com.dao.StudentMapper;
 import com.entity.*;
@@ -26,8 +28,15 @@ import java.util.UUID;
 public class StudentServiceImpl implements StudentService {
     @Resource
     StudentMapper studentMapper;
+
     @Resource
     RoleMapper roleMapper;
+
+    @Resource
+    ClassInfoMapper classInfoMapper;
+
+    @Resource
+    CollegeMapper collegeMapper;
 
     @Override
     public PageInfo selectStudentInfoData(Integer page, Integer limit, String fuzzy, String studentNumber, String studentName) {
@@ -43,6 +52,28 @@ public class StudentServiceImpl implements StudentService {
             student.setStudentNumber(studentNumber);
         }
         List<Student> studentList = studentMapper.selectStudentInfoAll(student);
+        if(!CollectionUtils.isEmpty(studentList)){
+            for (Student s:studentList
+                 ) {
+                if(!StringUtils.isEmpty(s.getStudentClass())){
+                    ClassInfoExample classInfoExample = new ClassInfoExample();
+                    classInfoExample.createCriteria().andClassCodeEqualTo(s.getStudentClass());
+                    List<ClassInfo> classInfoList = classInfoMapper.selectByExample(classInfoExample);
+                    if(!CollectionUtils.isEmpty(classInfoList)){
+                        s.setClassName(classInfoList.get(0).getClassName());
+                    }
+                }
+
+                if(!StringUtils.isEmpty(s.getStudentCollege())){
+                    CollegeExample collegeExample = new CollegeExample();
+                    collegeExample.createCriteria().andCollegeCodeEqualTo(s.getStudentCollege());
+                    List<College> collegeList = collegeMapper.selectByExample(collegeExample);
+                    if(!CollectionUtils.isEmpty(collegeList)){
+                        s.setCollegeName(collegeList.get(0).getCollegeName());
+                    }
+                }
+            }
+        }
         return new PageInfo<>(studentList);
     }
 
