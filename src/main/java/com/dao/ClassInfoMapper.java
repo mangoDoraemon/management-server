@@ -22,4 +22,8 @@ public interface ClassInfoMapper {
     int updateByExampleSelective(@Param("record") ClassInfo record, @Param("example") ClassInfoExample example);
 
     int updateByExample(@Param("record") ClassInfo record, @Param("example") ClassInfoExample example);
+
+    List<ClassInfo> selectClassInfoAll(ClassInfo classInfo);
+
+    List<ClassInfo> getClassInfoDict();
 }

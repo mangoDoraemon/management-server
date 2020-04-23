@@ -22,4 +22,11 @@ public interface CollegeMapper {
     int updateByExampleSelective(@Param("record") College record, @Param("example") CollegeExample example);
 
     int updateByExample(@Param("record") College record, @Param("example") CollegeExample example);
+
+    List<College> selectCollegeInfoAll(College college);
+
+
+    List<College> getCollegeDict();
+
+    List<College> getChartInfo();
 }

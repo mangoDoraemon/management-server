@@ -88,7 +88,8 @@ public class UserController {
      * @return
      */
     @GetMapping("/fetchUser")
-    public PageInfo fetchUserInfoData(@RequestParam(required = false, defaultValue = "1") Integer page, @RequestParam(required = false, defaultValue = "10") Integer limit, @RequestParam(required = false) String fuzzy,
+    public PageInfo fetchUserInfoData(
+            @RequestParam(required = false, defaultValue = "1") Integer page, @RequestParam(required = false, defaultValue = "10") Integer limit, @RequestParam(required = false) String fuzzy,
                                          @RequestParam(required = false) String userName, @RequestParam(required = false) String authId
     ){
         return userService.fetchUserInfoData(page,limit,fuzzy,userName,authId);
@@ -101,5 +102,10 @@ public class UserController {
         ExcelUtil<UserInfo> util = new ExcelUtil<UserInfo>(UserInfo.class);
         AjaxResult ajaxResult=util.exportExcel(list, "userData");
         return ajaxResult;
+    }
+
+    @DeleteMapping("/deleteUser/{id}")
+    public AjaxResult deleteUser(@PathVariable String id){
+        return userService.deleteUser(id);
     }
 }

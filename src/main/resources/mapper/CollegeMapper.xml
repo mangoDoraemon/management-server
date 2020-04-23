@@ -185,6 +185,46 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+
+    <select id="selectCollegeInfoAll" resultType="com.entity.College">
+      select c.*
+      from college_info c
+      where c.status = '0000'
+      <if test="fuzzy !=null and fuzzy!=''">
+        and c.college_introduce LIKE concat(concat('%',#{fuzzy}),'%')
+        or c.college_dean LIKE concat(concat('%',#{fuzzy}),'%')
+        or c.college_email LIKE concat(concat('%',#{fuzzy}),'%')
+        or c.college_phone like concat(concat('%',#{fuzzy}),'%')
+        or c.college_level like concat(concat('%',#{fuzzy}),'%')
+      </if>
+
+      <if test="collegeCode != null and collegeCode != ''" >
+        AND c.college_code= #{collegeCode,jdbcType=VARCHAR}
+      </if>
+
+      <if test="collegeName != null and collegeName != ''" >
+        AND c.college_name= #{collegeName,jdbcType=VARCHAR}
+      </if>
+
+    </select>
+  <select id="getCollegeDict" resultType="com.entity.College">
+    select * from college_info
+  </select>
+  <select id="getChartInfo" resultType="com.entity.College">
+       SELECT
+	  c.college_code,
+	  c.college_name,
+	COUNT(t.teacher_number) AS teacherTotal,
+	COUNT(s.student_number) AS studentTotal
+     FROM
+	college_info c
+    LEFT JOIN student_info s ON s.student_college = c.college_code
+    LEFT JOIN teacher_info t ON t.teacher_collage = c.college_code
+     GROUP BY
+	c.college_code
+
+  </select>
+
   <update id="updateByExampleSelective" parameterType="map" >
     update college_info
     <set >

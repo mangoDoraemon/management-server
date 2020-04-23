@@ -19,6 +19,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -162,7 +163,37 @@ public class UserServiceImpl implements UserService {
     public AjaxResult modify(UserInfo userInfo, HttpServletRequest request) {
         if(userInfo != null){
             UserInfoExample userInfoExample = new UserInfoExample();
-            userInfoExample.createCriteria().andAuthIdEqualTo((String) request.getSession().getAttribute(CommonConstant.SESSION_USER_ID));
+            userInfoExample.createCriteria().andIdEqualTo(userInfo.getId());
+            if(!CollectionUtils.isEmpty(userInfo.getRoles())){
+                String roles = String.join(",",userInfo.getRoles());
+                if(roles.contains(CommonConstant.REGISTER_TYPE_USER)){
+                    StudentExample studentExample = new StudentExample();
+                    studentExample.createCriteria().andStudentNumberEqualTo(userInfo.getAuthId());
+                    List<Student> studentList = studentMapper.selectByExample(studentExample);
+                   if(!CollectionUtils.isEmpty(studentList)){
+                       Student student=studentList.get(0);
+                       student.setStudentEmail(userInfo.getUserEmail());
+                       student.setStudentName(userInfo.getRealName());
+                       student.setStudentPhone(userInfo.getUserPhone());
+                       student.setManageTime(new Date());
+                       studentMapper.updateByExampleSelective(student,studentExample);
+                   }
+
+                }
+                if(roles.contains(CommonConstant.REGISTER_TYPE_TEACHER)){
+                     TeacherExample teacherExample = new TeacherExample();
+                     teacherExample.createCriteria().andTeacherNumberEqualTo(userInfo.getAuthId());
+                     List<Teacher> teacherList = teacherMapper.selectByExample(teacherExample);
+                     if(!CollectionUtils.isEmpty(teacherList)){
+                         Teacher teacher = teacherList.get(0);
+                         teacher.setTeacherEmail(userInfo.getUserEmail());
+                         teacher.setTeacherName(userInfo.getRealName());
+                         teacher.setTeacherPhone(userInfo.getUserPhone());
+                         teacher.setManageTime(new Date());
+                         teacherMapper.updateByExampleSelective(teacher,teacherExample);
+                     }
+                }
+            }
             userMapper.updateByExampleSelective(userInfo,userInfoExample);
             return AjaxResult.success("修改信息成功");
         }else {
@@ -185,6 +216,56 @@ public class UserServiceImpl implements UserService {
             userInfo.setAuthId(authId);
         }
         List<UserInfo> userInfoList = userMapper.selectUserInfoAll(userInfo);
+        if(!CollectionUtils.isEmpty(userInfoList)){
+            for (UserInfo u:userInfoList
+                 ) {
+                if(!StringUtils.isEmpty(u.getId())){
+                    String roles = userMapper.getRoleById(u.getId());
+                    if(!StringUtils.isEmpty(roles)){
+                        u.setRoles(Arrays.asList(roles.split(",")));
+                    }
+                    if(!StringUtils.isEmpty(u.getStatus())){
+                        if(CommonConstant.STATUS_INIT.equals(u.getStatus())){
+                            u.setStatusName("正常");
+                        }
+                    }
+
+                }
+            }
+
+        }
         return new PageInfo<>(userInfoList);
+    }
+
+    @Override
+    public AjaxResult deleteUser(String id) {
+        UserInfo userInfo = userMapper.getUserInfoById(id);
+        Role role=roleMapper.getRoleInfoByUserId(id);
+        if(userInfo !=null && !StringUtils.isEmpty(userInfo.getAuthId())
+                && role !=null && !StringUtils.isEmpty(role.getRoles())){
+            RoleExample roleExample = new RoleExample();
+            roleExample.createCriteria().andIdEqualTo(role.getId());
+               if(role.getRoles().contains(CommonConstant.REGISTER_TYPE_USER)){
+                   StudentExample studentExample = new StudentExample();
+                   studentExample.createCriteria().andStudentNumberEqualTo(userInfo.getAuthId());
+                   List<Student> student=studentMapper.selectByExample(studentExample);
+                   Student student1=student.get(0);
+                   student1.setStatus("0000");
+                   studentMapper.updateByExampleSelective(student1,studentExample);
+                   roleMapper.deleteByExample(roleExample);
+               }if(role.getRoles().contains(CommonConstant.REGISTER_TYPE_TEACHER)){
+                   TeacherExample teacherExample = new TeacherExample();
+                   teacherExample.createCriteria().andTeacherNumberEqualTo(userInfo.getAuthId());
+                   List<Teacher> teacherList=teacherMapper.selectByExample(teacherExample);
+                   Teacher teacher=teacherList.get(0);
+                   teacher.setStatus("0000");
+                   teacherMapper.updateByExampleSelective(teacher,teacherExample);
+                   roleMapper.deleteByExample(roleExample);
+            }
+        }
+        UserInfoExample userInfoExample = new UserInfoExample();
+        userInfoExample.createCriteria().andIdEqualTo(id);
+        userMapper.deleteByExample(userInfoExample);
+        return AjaxResult.success("删除成功");
     }
 }

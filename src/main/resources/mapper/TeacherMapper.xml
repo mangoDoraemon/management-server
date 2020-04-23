@@ -218,7 +218,10 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+    <select id="getTeacherInfoDict" resultType="com.entity.Teacher">
+      select * from teacher_info where status !='9999'
+    </select>
+    <update id="updateByExampleSelective" parameterType="map" >
     update teacher_info
     <set >
       <if test="record.id != null" >

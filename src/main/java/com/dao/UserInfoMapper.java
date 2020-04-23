@@ -24,4 +24,8 @@ public interface UserInfoMapper {
     int updateByExample(@Param("record") UserInfo record, @Param("example") UserInfoExample example);
 
     List<UserInfo> selectUserInfoAll(UserInfo userInfo);
+
+    UserInfo getUserInfoById(String id);
+
+    String getRoleById(String id);
 }

@@ -1,6 +1,19 @@
 package com.entity;
 
-public class College {
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.io.Serializable;
+import java.util.List;
+
+@Entity
+@Table(name = "college_info")
+public class College implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
     private String id;
 
     private String collegeCode;
@@ -22,6 +35,22 @@ public class College {
     private String collegeLevel;
 
     private String remark;
+
+    @Transient
+    private String fuzzy;
+
+    @Transient
+    private Integer teacherTotal;
+
+    @Transient
+    private Integer studentTotal;
+
+    @Transient
+    private List<String> expectedData;
+
+    @Transient
+    private List<Integer> actualData;
+
 
     public String getId() {
         return id;
@@ -109,5 +138,46 @@ public class College {
 
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
+    }
+
+    public String getFuzzy() {
+        return fuzzy;
+    }
+
+    public void setFuzzy(String fuzzy) {
+        this.fuzzy = fuzzy;
+    }
+
+    public Integer getTeacherTotal() {
+        return teacherTotal;
+    }
+
+    public void setTeacherTotal(Integer teacherTotal) {
+        this.teacherTotal = teacherTotal;
+    }
+
+    public Integer getStudentTotal() {
+        return studentTotal;
+    }
+
+    public void setStudentTotal(Integer studentTotal) {
+        this.studentTotal = studentTotal;
+    }
+
+    public List<String> getExpectedData() {
+        return expectedData;
+    }
+
+    public void setExpectedData(List<String> expectedData) {
+        this.expectedData = expectedData;
+    }
+
+
+    public List<Integer> getActualData() {
+        return actualData;
+    }
+
+    public void setActualData(List<Integer> actualData) {
+        this.actualData = actualData;
     }
 }

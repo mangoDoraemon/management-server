@@ -11,7 +11,7 @@ import org.springframework.context.annotation.PropertySource;
  */
 @Configuration   //配置类注解，被自动扫描发现
 @PropertySource("classpath:application.yml")
-@ConfigurationProperties(prefix = "sb")
+@ConfigurationProperties(prefix = "management-server")
 public class Global
 {
     /** 项目名称 */

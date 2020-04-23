@@ -22,4 +22,6 @@ public interface TeacherMapper {
     int updateByExampleSelective(@Param("record") Teacher record, @Param("example") TeacherExample example);
 
     int updateByExample(@Param("record") Teacher record, @Param("example") TeacherExample example);
+
+    List<Teacher> getTeacherInfoDict();
 }

@@ -58,6 +58,9 @@ public class UserInfo implements Serializable {
     @Transient
     private String registerType;
 
+    @Transient
+    private String statusName;
+
     public String getId() {
         return id;
     }
@@ -168,5 +171,13 @@ public class UserInfo implements Serializable {
 
     public void setFuzzy(String fuzzy) {
         this.fuzzy = fuzzy;
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
     }
 }

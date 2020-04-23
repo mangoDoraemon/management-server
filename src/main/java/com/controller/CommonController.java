@@ -2,17 +2,27 @@ package com.controller;
 
 import com.config.Global;
 import com.constant.CommonConstant;
+import com.dao.ClassInfoMapper;
+import com.dao.CollegeMapper;
+import com.dao.TeacherMapper;
+import com.entity.*;
+import com.util.AjaxResult;
 import com.util.file.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: wangjingyuan
@@ -20,6 +30,16 @@ import javax.servlet.http.HttpServletResponse;
  */
 @RestController
 public class CommonController {
+
+    @Resource
+    private CollegeMapper collegeMapper;
+
+    @Resource
+    private ClassInfoMapper classInfoMapper;
+
+    @Resource
+    private TeacherMapper teacherMapper;
+
     private static Logger logger = LoggerFactory.getLogger(CommonController.class);
 
 
@@ -48,4 +68,54 @@ public class CommonController {
                 "attachment;fileName=" + FileUtils.setFileDownloadHeader(request, downloadName));
         FileUtils.writeBytes(downloadPath, response.getOutputStream());
     }
+
+    /**
+     * 获取学院字典信息
+     * @return
+     */
+    @GetMapping("/common/collegeDict")
+    public AjaxResult getCollegeDict(){
+       List<College> collegeList = collegeMapper.getCollegeDict();
+       return AjaxResult.success(collegeList);
+    }
+
+    /**
+     * 获取班级字典信息
+     * @return
+     */
+    @GetMapping("/common/classInfoDict")
+    public AjaxResult getClassInfoDict(){
+       List<ClassInfo> classInfoList = classInfoMapper.getClassInfoDict();
+       return AjaxResult.success(classInfoList);
+    }
+
+    /**
+     * 获取教师字典信息
+     * @return
+     */
+    @GetMapping("/common/teacherInfoDict")
+    public AjaxResult getTeacherInfoDict(){
+        List<Teacher> teacherList = teacherMapper.getTeacherInfoDict();
+        return AjaxResult.success(teacherList);
+    }
+
+    @GetMapping("/common/getChartInfo")
+    public charVo getChartInfo(){
+        List<College> collegeList=collegeMapper.getChartInfo();
+        List<String> expectedData = new ArrayList<>();
+        List<Integer> actualData = new ArrayList<>();
+        if(!CollectionUtils.isEmpty(collegeList)){
+            for ( College college:collegeList
+                  ) {
+                 expectedData.add(college.getCollegeName());
+                 actualData.add(college.getStudentTotal());
+            }
+
+        }
+        charVo college=new charVo();
+        college.setExpectedData(expectedData);
+        college.setActualData(actualData);
+        return college;
+    }
+
 }

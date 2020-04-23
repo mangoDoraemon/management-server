@@ -180,6 +180,9 @@
       <if test="record.avatar != null" >
         avatar = #{record.avatar,jdbcType=VARCHAR},
       </if>
+      <if test="record.introduction != null" >
+        introduction = #{record.introduction,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -217,13 +220,20 @@
     </if>
 
     <if test="userName != null and userName != ''" >
-      AND user_name= #{userName,jdbcType=VARCHAR}
+      AND u.user_name= #{userName,jdbcType=VARCHAR}
     </if>
 
     <if test="authId != null and authId != ''" >
-      AND auth_id= #{authId,jdbcType=VARCHAR}
+      AND u.auth_id= #{authId,jdbcType=VARCHAR}
     </if>
 
+
+  </select>
+  <select id="getUserInfoById" resultType="com.entity.UserInfo">
+    select * from user_info u where u.id=#{id}
+  </select>
+  <select id="getRoleById" resultType="java.lang.String">
+    select roles from role_info where user_id=#{id}
 
   </select>
 </mapper>

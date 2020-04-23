@@ -22,4 +22,6 @@ public interface UserService {
     AjaxResult modify(UserInfo userInfo, HttpServletRequest request);
 
     PageInfo fetchUserInfoData(Integer page, Integer limit, String fuzzy, String userName, String authId);
+
+    AjaxResult deleteUser(String id);
 }

@@ -1,8 +1,19 @@
 package com.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.io.Serializable;
 import java.util.Date;
 
-public class Student {
+@Entity
+@Table(name = "student_info")
+public class Student implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
     private String id;
 
     private String studentNumber;
@@ -32,6 +43,9 @@ public class Student {
     private String status;
 
     private String subjectId;
+
+    @Transient
+    private String fuzzy;
 
     public String getId() {
         return id;
@@ -151,5 +165,13 @@ public class Student {
 
     public void setSubjectId(String subjectId) {
         this.subjectId = subjectId == null ? null : subjectId.trim();
+    }
+
+    public String getFuzzy() {
+        return fuzzy;
+    }
+
+    public void setFuzzy(String fuzzy) {
+        this.fuzzy = fuzzy;
     }
 }

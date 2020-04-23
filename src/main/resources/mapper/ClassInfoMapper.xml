@@ -161,6 +161,37 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+
+    <select id="selectClassInfoAll" resultType="com.entity.ClassInfo">
+      select c.*,
+      c1.college_name as collegeName,
+      t.teacher_name as authName
+      from class_info c
+      left join college_info c1 on c1.college_code = c.college_id
+      left join teacher_info t on t.teacher_number = c.auth_id
+      <where>
+        <if test="fuzzy !=null and fuzzy!=''">
+          c.class_code LIKE concat(concat('%',#{fuzzy}),'%')
+          or c.class_name LIKE concat(concat('%',#{fuzzy}),'%')
+          or c.remark LIKE concat(concat('%',#{fuzzy}),'%')
+          or c1.college_name like concat(concat('%',#{fuzzy}),'%')
+          or c.college_id like concat(concat('%',#{fuzzy}),'%')
+        </if>
+
+        <if test="classCode != null and classCode != ''" >
+          AND c.class_code= #{classCode,jdbcType=VARCHAR}
+        </if>
+
+        <if test="className != null and className != ''" >
+          AND c.class_name= #{className,jdbcType=VARCHAR}
+        </if>
+
+      </where>
+    </select>
+  <select id="getClassInfoDict" resultType="com.entity.ClassInfo">
+    select * from class_info
+  </select>
+
   <update id="updateByExampleSelective" parameterType="map" >
     update class_info
     <set >
