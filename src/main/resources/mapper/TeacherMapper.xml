@@ -221,6 +221,31 @@
     <select id="getTeacherInfoDict" resultType="com.entity.Teacher">
       select * from teacher_info where status !='9999'
     </select>
+
+    <select id="selectTeacherInfoAll" resultType="com.entity.Teacher">
+          select t.*,
+          c.college_name as collegeName
+          from teacher_info t
+          left join college_info c on c.college_code = t.teacher_collage
+          where t.status !='9999'
+      <if test="fuzzy !=null and fuzzy!=''">
+        and t.teacher_number LIKE concat(concat('%',#{fuzzy}),'%')
+        or t.teacher_name LIKE concat(concat('%',#{fuzzy}),'%')
+        or t.teacher_email LIKE concat(concat('%',#{fuzzy}),'%')
+        or t.teacher_phone like concat(concat('%',#{fuzzy}),'%')
+        or t.teacher_position like concat(concat('%',#{fuzzy}),'%')
+      </if>
+
+      <if test="teacherNumber != null and teacherNumber != ''" >
+        AND t.teacher_number= #{teacherNumber,jdbcType=VARCHAR}
+      </if>
+
+      <if test="teacherName != null and teacherName != ''" >
+        AND t.teacher_name= #{teacherName,jdbcType=VARCHAR}
+      </if>
+
+    </select>
+
     <update id="updateByExampleSelective" parameterType="map" >
     update teacher_info
     <set >

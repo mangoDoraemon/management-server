@@ -191,8 +191,11 @@
   <select id="getClassInfoDict" parameterType="string" resultType="com.entity.ClassInfo">
     select * from class_info where college_id=#{id}
   </select>
+    <select id="selectClassNameByTeacherNumber" resultType="com.entity.ClassInfo">
+      select * from class_info where auth_id=#{teacherNumber}
+    </select>
 
-  <update id="updateByExampleSelective" parameterType="map" >
+    <update id="updateByExampleSelective" parameterType="map" >
     update class_info
     <set >
       <if test="record.id != null" >

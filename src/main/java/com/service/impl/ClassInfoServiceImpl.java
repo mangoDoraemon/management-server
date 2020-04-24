@@ -3,6 +3,7 @@ package com.service.impl;
 import com.constant.CommonConstant;
 import com.dao.ClassInfoMapper;
 import com.dao.StudentMapper;
+import com.dao.TeacherMapper;
 import com.dao.UserInfoMapper;
 import com.entity.*;
 import com.github.pagehelper.PageHelper;
@@ -35,6 +36,9 @@ public class ClassInfoServiceImpl implements ClassInfoService {
 
     @Resource
     private StudentMapper studentMapper;
+
+    @Resource
+    private TeacherMapper teacherMapper;
 
     @Override
     public PageInfo fetchData(Integer page, Integer limit, String fuzzy, String classCode, String className) {
@@ -109,7 +113,7 @@ public class ClassInfoServiceImpl implements ClassInfoService {
                 return AjaxResult.error("改班级编号已经存在，请核对");
             }
             ClassInfoExample classInfoExample1 = new ClassInfoExample();
-            classInfoExample1.createCriteria().andIdNotEqualTo(classInfo.getId());
+            classInfoExample1.createCriteria().andIdEqualTo(classInfo.getId());
             HttpSession session=  request.getSession();
             classInfo.setManageUser((String) session.getAttribute(CommonConstant.SESSION_USER_ID));
             classInfo.setManageTime(new Date());

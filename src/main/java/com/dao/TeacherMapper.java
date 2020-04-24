@@ -24,4 +24,6 @@ public interface TeacherMapper {
     int updateByExample(@Param("record") Teacher record, @Param("example") TeacherExample example);
 
     List<Teacher> getTeacherInfoDict();
+
+    List<Teacher> selectTeacherInfoAll(Teacher teacher);
 }
