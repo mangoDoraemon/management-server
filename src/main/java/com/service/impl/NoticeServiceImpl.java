@@ -1,5 +1,6 @@
 package com.service.impl;
 
+import com.github.pagehelper.PageInfo;
 import com.service.NoticeService;
 import org.springframework.stereotype.Service;
 
@@ -9,4 +10,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class NoticeServiceImpl implements NoticeService {
+    @Override
+    public PageInfo selectNoticeInfoData(Integer page, Integer limit, String fuzzy) {
+        return null;
+    }
 }
