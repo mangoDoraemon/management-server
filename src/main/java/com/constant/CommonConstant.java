@@ -19,5 +19,7 @@ public class CommonConstant {
     public static final String STATUS_INIT = "0000";
     public static final String STATUS_REGISTER_NAME="已注册";
     public static final String STATUS_INIT_NAME = "未注册";
+    public static final String TITLE ="用户登录操作";
+    public static final String CONTENT = "登录成功";
 
 }

@@ -1,15 +1,13 @@
 package com.service.impl;
 
 import com.constant.CommonConstant;
-import com.dao.RoleMapper;
-import com.dao.StudentMapper;
-import com.dao.TeacherMapper;
-import com.dao.UserInfoMapper;
+import com.dao.*;
 import com.entity.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.service.UserService;
 import com.util.AjaxResult;
+import com.util.DateUtils;
 import com.util.Md5Encrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -45,6 +43,9 @@ public class UserServiceImpl implements UserService {
     @Resource
     TeacherMapper teacherMapper;
 
+    @Resource
+    TimeLineMapper timeLineMapper;
+
     @Override
     public AjaxResult login(String userName, String userPassword, HttpServletRequest request) {
         UserInfoExample userInfoExample = new UserInfoExample();
@@ -59,7 +60,15 @@ public class UserServiceImpl implements UserService {
             HttpSession session = request.getSession();
             session.setMaxInactiveInterval(CommonConstant.SESSION_TIMEOUT);
             session.setAttribute(CommonConstant.SESSION_USER_ID,userInfoList.get(0).getId());
-
+            TimeLine timeLine = new TimeLine();
+            timeLine.setTitleId(UUID.randomUUID().toString());
+            timeLine.setTitle(CommonConstant.TITLE);
+            timeLine.setContent(userInfoList.get(0).getUserName()+CommonConstant.CONTENT+"--"+DateUtils.date2String(new Date()));
+            timeLine.setTimeStamp(DateUtils.date2String(new Date()));
+            timeLine.setManageTime(DateUtils.date2String(new Date()));
+            timeLine.setStatus(CommonConstant.STATUS_INIT);
+            timeLine.setUserId(userInfoList.get(0).getId());
+            timeLineMapper.insert(timeLine);
             return AjaxResult.success("登陆成功",userInfoList.get(0));
         } else {
             return AjaxResult.warn("登陆失败，请检查您的用户名或密码是否正确");
@@ -152,6 +161,28 @@ public class UserServiceImpl implements UserService {
                     String roles = roleList.get(0).getRoles();
                     if(StringUtils.isNotBlank(roles)){
                         userInfo.setRoles(Arrays.asList(roles.split(",")) );
+                    }
+                    if(roles.contains(CommonConstant.REGISTER_TYPE_USER)){
+                     StudentExample studentExample = new StudentExample();
+                     studentExample.createCriteria().andStudentNumberEqualTo(userInfo.getAuthId());
+                     List<Student> studentList = studentMapper.selectByExample(studentExample);
+                     if(!CollectionUtils.isEmpty(studentList)){
+                         Student student=studentList.get(0);
+                         userInfo.setRealName(student.getStudentName());
+                         userInfo.setUserPhone(student.getStudentPhone());
+                         userInfo.setUserEmail(student.getStudentEmail());
+                     }
+                    }
+                    if(roles.contains(CommonConstant.REGISTER_TYPE_TEACHER)){
+                        TeacherExample teacherExample = new TeacherExample();
+                        teacherExample.createCriteria().andTeacherNumberEqualTo(userInfo.getAuthId());
+                        List<Teacher> teacherList = teacherMapper.selectByExample(teacherExample);
+                        if(!CollectionUtils.isEmpty(teacherList)){
+                            Teacher teacher = teacherList.get(0);
+                            userInfo.setRealName(teacher.getTeacherName());
+                            userInfo.setUserPhone(teacher.getTeacherPhone());
+                            userInfo.setUserEmail(teacher.getTeacherEmail());
+                        }
                     }
             }
             return userInfo;
@@ -267,5 +298,54 @@ public class UserServiceImpl implements UserService {
         userInfoExample.createCriteria().andIdEqualTo(id);
         userMapper.deleteByExample(userInfoExample);
         return AjaxResult.success("删除成功");
+    }
+
+    /**
+     * 修改个人信息
+     * @param userInfo
+     * @param request
+     * @return
+     */
+    @Override
+    public AjaxResult modifyOwn(UserInfo userInfo, HttpServletRequest request) {
+        if(userInfo!=null){
+            HttpSession session = request.getSession();
+            String userId = (String) session.getAttribute(CommonConstant.SESSION_USER_ID);
+            UserInfoExample userInfoExample=new UserInfoExample();
+            userInfoExample.createCriteria().andIdEqualTo(userId);
+            List<UserInfo> userInfoList = userMapper.selectByExample(userInfoExample);
+            if(!CollectionUtils.isEmpty(userInfoList)){
+                UserInfo userInfo1=userInfoList.get(0);
+                userInfo.setId(userInfo1.getId());
+                if(StringUtils.isEmpty(userInfo.getUserPassword())){
+                    userInfo.setUserPassword(userInfo1.getUserPassword());
+                }
+                Role role = roleMapper.getRoleInfoByUserId(userId);
+
+                if(role.getRoles().contains(CommonConstant.REGISTER_TYPE_TEACHER)){
+                    TeacherExample teacherExample = new TeacherExample();
+                    teacherExample.createCriteria().andTeacherNumberEqualTo(userInfo1.getAuthId());
+                    Teacher teacher = new Teacher();
+                    teacher.setTeacherName(userInfo.getRealName());
+                    teacher.setTeacherEmail(userInfo.getUserEmail());
+                    teacher.setTeacherPhone(userInfo.getUserPhone());
+                    teacherMapper.updateByExampleSelective(teacher,teacherExample);
+                }
+                if(role.getRoles().contains(CommonConstant.REGISTER_TYPE_USER)){
+                    StudentExample studentExample = new StudentExample();
+                    studentExample.createCriteria().andStudentNumberEqualTo(userInfo1.getAuthId());
+                    Student student = new Student();
+                    student.setStudentName(userInfo.getRealName());
+                    student.setStudentEmail(userInfo.getUserEmail());
+                    student.setStudentPhone(userInfo.getUserPhone());
+                    studentMapper.updateByExampleSelective(student,studentExample);
+                }
+                userMapper.updateByExampleSelective(userInfo,userInfoExample);
+                return AjaxResult.success("更新信息成功");
+            }
+        }
+            return AjaxResult.error("更新信息失败");
+
+
     }
 }

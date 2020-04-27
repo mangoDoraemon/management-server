@@ -108,4 +108,15 @@ public class UserController {
     public AjaxResult deleteUser(@PathVariable String id){
         return userService.deleteUser(id);
     }
+
+    /**
+     * 修改个人信息
+     * @param userInfo
+     * @param request
+     * @return
+     */
+    @PutMapping("/modifyOwn")
+    public AjaxResult modifyOwn(@RequestBody UserInfo userInfo,HttpServletRequest request){
+        return userService.modifyOwn(userInfo,request);
+    }
 }
