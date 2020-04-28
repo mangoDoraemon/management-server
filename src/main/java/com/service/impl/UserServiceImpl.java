@@ -60,6 +60,10 @@ public class UserServiceImpl implements UserService {
             HttpSession session = request.getSession();
             session.setMaxInactiveInterval(CommonConstant.SESSION_TIMEOUT);
             session.setAttribute(CommonConstant.SESSION_USER_ID,userInfoList.get(0).getId());
+            if(!StringUtils.isEmpty(userInfoList.get(0).getAuthId())){
+                session.setAttribute(CommonConstant.SESSION_AUTH_ID,userInfoList.get(0).getAuthId());
+            }
+
             TimeLine timeLine = new TimeLine();
             timeLine.setTitleId(UUID.randomUUID().toString());
             timeLine.setTitle(CommonConstant.TITLE);
@@ -141,6 +145,7 @@ public class UserServiceImpl implements UserService {
     public void logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.removeAttribute(CommonConstant.SESSION_USER_ID);
+        session.removeAttribute(CommonConstant.SESSION_AUTH_ID);
     }
 
     @Override

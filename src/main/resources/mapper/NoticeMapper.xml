@@ -199,7 +199,37 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+
+    <select id="selectNoticeInfoData" resultType="com.entity.Notice">
+    select
+    n.*
+    from
+    notice_info n
+    where (n.status !='9999')
+      <if test="roles!=null and roles.size>0">
+        <foreach collection="roles" item="roleItem" separator="or">
+
+          <if test="roleItem==1">
+            and n.auth_id = #{userNumber}
+          </if>
+          <if test="roleItem==2">
+            and n.status !=''
+          </if>
+
+        </foreach>
+      </if>
+
+      <if test="fuzzy !=null and fuzzy!=''">
+        and notice_title LIKE concat(concat('%',#{fuzzy}),'%')
+        or notice_content LIKE concat(concat('%',#{fuzzy}),'%')
+        or manage_user LIKE concat(concat('%',#{fuzzy}),'%')
+      </if>
+    </select>
+    <select id="selectNoticeById" parameterType="string" resultType="com.entity.Notice">
+        select * from notice_info where id=#{id}
+    </select>
+
+    <update id="updateByExampleSelective" parameterType="map" >
     update notice_info
     <set >
       <if test="record.id != null" >

@@ -1,5 +1,6 @@
 package com.controller;
 
+import com.annotaion.LoginRequired;
 import com.dao.UserInfoMapper;
 import com.entity.UserInfo;
 import com.github.pagehelper.PageInfo;
@@ -34,6 +35,7 @@ public class UserController {
      * @return
      */
     @PutMapping("/login")
+    @LoginRequired
     public AjaxResult login(@RequestBody UserInfo user, HttpServletRequest request){
         return userService.login(user.getUserName(), user.getUserPassword(), request);
     }
@@ -43,6 +45,7 @@ public class UserController {
      * @param user
      * @return
      */
+    @LoginRequired
     @PostMapping("/register")
     public AjaxResult register(@RequestBody UserInfo user){
         return userService.register(user);

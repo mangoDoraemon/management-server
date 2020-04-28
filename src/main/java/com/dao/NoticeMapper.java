@@ -26,4 +26,8 @@ public interface NoticeMapper {
     int updateByExampleWithBLOBs(@Param("record") Notice record, @Param("example") NoticeExample example);
 
     int updateByExample(@Param("record") Notice record, @Param("example") NoticeExample example);
+
+    List<Notice> selectNoticeInfoData(Notice notice);
+
+    Notice selectNoticeById(String id);
 }

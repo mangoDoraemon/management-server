@@ -1,8 +1,21 @@
 package com.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
-public class Notice {
+
+@Entity
+@Table( name ="notice_info" )
+public class Notice implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
     private String id;
 
     private String noticeId;
@@ -22,6 +35,18 @@ public class Notice {
     private String authId;
 
     private String noticeContent;
+
+    @Transient
+    private  String fuzzy;
+
+    @Transient
+    private List<Integer> roles;
+
+    @Transient
+    private String userNumber;
+
+    @Transient
+    private String statusName;
 
     public String getId() {
         return id;
@@ -101,5 +126,37 @@ public class Notice {
 
     public void setNoticeContent(String noticeContent) {
         this.noticeContent = noticeContent == null ? null : noticeContent.trim();
+    }
+
+    public String getFuzzy() {
+        return fuzzy;
+    }
+
+    public void setFuzzy(String fuzzy) {
+        this.fuzzy = fuzzy;
+    }
+
+    public List<Integer> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Integer> roles) {
+        this.roles = roles;
+    }
+
+    public String getUserNumber() {
+        return userNumber;
+    }
+
+    public void setUserNumber(String userNumber) {
+        this.userNumber = userNumber;
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
     }
 }
