@@ -54,4 +54,10 @@ public class NoticeController {
         return noticeService.deleteNotice(id);
     }
 
+    @GetMapping("/fetchNoticeInfoDataAll")
+    public PageInfo fetchNoticeInfoDataAll(@RequestParam(required = false, defaultValue = "1") Integer page, @RequestParam(required = false, defaultValue = "10") Integer limit, @RequestParam(required = false) String fuzzy,
+                                        HttpServletRequest request){
+        return noticeService.selectNoticeInfoDataAll(page,limit,fuzzy,request);
+    }
+
 }

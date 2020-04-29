@@ -127,4 +127,15 @@ public class NoticeServiceImpl implements NoticeService {
         }
         return AjaxResult.warn("服务器出现错误了，请稍候再试");
     }
+
+    @Override
+    public PageInfo selectNoticeInfoDataAll(Integer page, Integer limit, String fuzzy, HttpServletRequest request) {
+        PageHelper.startPage(page,limit);
+        Notice notice = new Notice();
+        if(!StringUtils.isEmpty(fuzzy)){
+            notice.setFuzzy(fuzzy);
+        }
+        List<Notice> noticeList = noticeMapper.selectNoticeInfoDataAll(notice);
+        return new PageInfo<>(noticeList);
+    }
 }

@@ -229,6 +229,20 @@
         select * from notice_info where id=#{id}
     </select>
 
+    <select id="selectNoticeInfoDataAll" resultType="com.entity.Notice">
+        select
+        n.*
+        from
+        notice_info n
+        where (n.status !='draft')
+      <if test="fuzzy !=null and fuzzy!=''">
+        and notice_title LIKE concat(concat('%',#{fuzzy}),'%')
+        or notice_content LIKE concat(concat('%',#{fuzzy}),'%')
+        or manage_user LIKE concat(concat('%',#{fuzzy}),'%')
+      </if>
+
+    </select>
+
     <update id="updateByExampleSelective" parameterType="map" >
     update notice_info
     <set >

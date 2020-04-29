@@ -30,4 +30,6 @@ public interface NoticeMapper {
     List<Notice> selectNoticeInfoData(Notice notice);
 
     Notice selectNoticeById(String id);
+
+    List<Notice> selectNoticeInfoDataAll(Notice notice);
 }

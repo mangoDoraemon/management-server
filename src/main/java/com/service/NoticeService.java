@@ -19,4 +19,6 @@ public interface NoticeService {
     AjaxResult fetchNoticeById(String id);
 
     AjaxResult deleteNotice(String id);
+
+    PageInfo selectNoticeInfoDataAll(Integer page, Integer limit, String fuzzy, HttpServletRequest request);
 }
