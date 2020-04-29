@@ -22,7 +22,7 @@ public class TimeLineController {
     private TimeLineService timeLineService;
 
     @GetMapping("/fetchTimeLineData")
-    public PageInfo fetchTimeLineData(@RequestParam(required = false, defaultValue = "1") Integer page, @RequestParam(required = false, defaultValue = "4") Integer limit
+    public PageInfo fetchTimeLineData(@RequestParam(required = false, defaultValue = "1") Integer page, @RequestParam(required = false, defaultValue = "5") Integer limit
                                          , HttpServletRequest httpRequest
                                          ){
         return timeLineService.fetchTimeLineData(page,limit,httpRequest);

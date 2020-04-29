@@ -16,4 +16,6 @@ public interface TeacherService {
     AjaxResult updateData(Teacher teacher);
 
     AjaxResult deleteData(String id);
+
+    PageInfo fetchMineStudent(Integer page, Integer limit, String fuzzy, String studentNumber, String studentName);
 }

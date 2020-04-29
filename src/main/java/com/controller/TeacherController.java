@@ -42,4 +42,20 @@ public class TeacherController {
         return teacherService.deleteData(id);
     }
 
+
+    /**
+     * 查看我的指导学生
+     * @param page
+     * @param limit
+     * @param fuzzy
+     * @param studentNumber
+     * @param studentName
+     * @return
+     */
+    @GetMapping("/fetchMineStudent")
+    public PageInfo fetchMineStudent(@RequestParam(required = false, defaultValue = "1") Integer page, @RequestParam(required = false, defaultValue = "10") Integer limit, @RequestParam(required = false) String fuzzy,
+                              @RequestParam(required = false) String studentNumber, @RequestParam(required = false) String studentName){
+        return teacherService.fetchMineStudent(page,limit,fuzzy,studentNumber,studentName);
+    }
+
 }

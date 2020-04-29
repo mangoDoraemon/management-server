@@ -230,6 +230,7 @@ public class UserServiceImpl implements UserService {
                      }
                 }
             }
+            userInfo.setIntroduction("请编辑您的个人信息");
             userMapper.updateByExampleSelective(userInfo,userInfoExample);
             return AjaxResult.success("修改信息成功");
         }else {

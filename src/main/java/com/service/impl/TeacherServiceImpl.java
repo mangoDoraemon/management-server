@@ -136,4 +136,9 @@ public class TeacherServiceImpl implements TeacherService {
             return AjaxResult.error("删除失败！");
 
     }
+
+    @Override
+    public PageInfo fetchMineStudent(Integer page, Integer limit, String fuzzy, String studentNumber, String studentName) {
+        return null;
+    }
 }
