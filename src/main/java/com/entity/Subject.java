@@ -58,6 +58,9 @@ public class Subject implements Serializable {
     @Transient
     private String totalNumber;
 
+    @Transient
+    private String releasePeopleName;
+
     public String getId() {
         return id;
     }
@@ -208,5 +211,13 @@ public class Subject implements Serializable {
 
     public void setTotalNumber(String totalNumber) {
         this.totalNumber = totalNumber;
+    }
+
+    public String getReleasePeopleName() {
+        return releasePeopleName;
+    }
+
+    public void setReleasePeopleName(String releasePeopleName) {
+        this.releasePeopleName = releasePeopleName;
     }
 }

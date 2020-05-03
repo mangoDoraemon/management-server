@@ -7,6 +7,7 @@ import com.util.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -42,5 +43,18 @@ public class StudentController {
     @PutMapping("/updateStudent")
     public AjaxResult updateStudent(@RequestBody Student student){
         return studentService.updateStudent(student);
+    }
+
+    @GetMapping("/fetchSubject")
+    public PageInfo fetchSubject(@RequestParam(required = false, defaultValue = "1") Integer page, @RequestParam(required = false, defaultValue = "10") Integer limit, @RequestParam(required = false) String fuzzy,
+                                 HttpServletRequest request
+
+    ){
+        return studentService.fetchSubject(page,limit,fuzzy,request);
+    }
+
+    @PutMapping("/chooseSubject/{id}")
+    public AjaxResult chooseSubject(@PathVariable String id,HttpServletRequest request){
+        return studentService.chooseSubject(id,request);
     }
 }

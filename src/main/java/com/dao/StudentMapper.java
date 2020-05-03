@@ -4,6 +4,7 @@ import com.entity.Student;
 import com.entity.StudentExample;
 import java.util.List;
 
+import com.entity.Subject;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -28,4 +29,8 @@ public interface StudentMapper {
     String selectSubjectById(String subjectId);
 
     List<Student> selectStudentInfoDict();
+
+    List<Student> selectMineClassInfo(Student student);
+
+    List<Subject> selectSubject(Subject subject);
 }

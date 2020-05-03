@@ -41,4 +41,15 @@ public class ClassInfoController {
     public AjaxResult deleteData(@PathVariable String id){
         return classInfoService.deleteData(id);
     }
+
+    @GetMapping("/fetchTree")
+    public AjaxResult fetchTree(HttpServletRequest request){
+        return classInfoService.fetchTree(request);
+    }
+
+    @GetMapping("/fetchMineClass")
+    public PageInfo fetchMineClass(@RequestParam(required = false, defaultValue = "1") Integer page, @RequestParam(required = false, defaultValue = "10") Integer limit, @RequestParam(required = false) String fuzzy,
+                              @RequestParam(required = false) String classCode){
+        return classInfoService.fetchMineClass(page,limit,fuzzy,classCode);
+    }
 }

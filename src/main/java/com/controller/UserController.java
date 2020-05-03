@@ -122,4 +122,10 @@ public class UserController {
     public AjaxResult modifyOwn(@RequestBody UserInfo userInfo,HttpServletRequest request){
         return userService.modifyOwn(userInfo,request);
     }
+
+    @GetMapping ("/getMineSubject")
+    public AjaxResult getMineSubject(HttpServletRequest request){
+
+        return userService.getMineSubject(request);
+    }
 }

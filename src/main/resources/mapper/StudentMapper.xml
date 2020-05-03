@@ -226,7 +226,7 @@
       <if test="fuzzy !=null and fuzzy!=''">
         and s.student_number LIKE concat(concat('%',#{fuzzy}),'%')
         or s.student_phone LIKE concat(concat('%',#{fuzzy}),'%')
-        or s.student_emial LIKE concat(concat('%',#{fuzzy}),'%')
+        or s.student_email LIKE concat(concat('%',#{fuzzy}),'%')
       </if>
 
       <if test="studentName != null and studentName != ''" >
@@ -243,6 +243,41 @@
     </select>
   <select id="selectStudentInfoDict" resultType="com.entity.Student">
    select * from student_info where subject_id is null or subject_id =" "
+  </select>
+  <select id="selectMineClassInfo" resultType="com.entity.Student">
+    select s.*
+    from
+    student_info s
+    where s.student_class = #{studentClass,jdbcType=VARCHAR}
+     <if test="fuzzy !=null and fuzzy!=''">
+       and s.student_number LIKE concat(concat('%',#{fuzzy}),'%')
+       or s.student_phone LIKE concat(concat('%',#{fuzzy}),'%')
+       or s.student_email LIKE concat(concat('%',#{fuzzy}),'%')
+     </if>
+  </select>
+  <select id="selectSubject" resultType="com.entity.Subject">
+    select
+    s.*,
+    count(t.id) as totalNumber
+    from
+    subject_info s
+    left join student_info t on s.id = t.subject_id
+    <where>
+      <if test="fuzzy !=null and fuzzy!=''">
+        and s.subject_name LIKE concat(concat('%',#{fuzzy}),'%')
+        or s.subject_content LIKE concat(concat('%',#{fuzzy}),'%')
+        or s.remark LIKE concat(concat('%',#{fuzzy}),'%')
+      </if>
+
+      <if test="collegeId != null and collegeId !='' ">
+        and s.college_id = #{collegeId}
+      </if>
+      <if test="id != null and id !='' ">
+        and s.id != #{id}
+      </if>
+       and s.status = "success"
+    </where>
+    GROUP BY s.id
   </select>
 
   <update id="updateByExampleSelective" parameterType="map" >

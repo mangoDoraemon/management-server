@@ -18,4 +18,8 @@ public interface ClassInfoService {
     AjaxResult deleteData(String id);
 
     AjaxResult updateData(ClassInfo classInfo,HttpServletRequest request);
+
+    AjaxResult fetchTree(HttpServletRequest request);
+
+    PageInfo fetchMineClass(Integer page, Integer limit, String fuzzy, String classCode);
 }

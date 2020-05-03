@@ -17,6 +17,7 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -122,5 +123,34 @@ public class ClassInfoServiceImpl implements ClassInfoService {
         }else {
             return AjaxResult.error("修改失败");
         }
+    }
+
+
+    @Override
+    public AjaxResult fetchTree(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String authId = (String) session.getAttribute(CommonConstant.SESSION_AUTH_ID);
+        ClassInfoExample classInfoExample = new ClassInfoExample();
+        classInfoExample.createCriteria().andAuthIdEqualTo(authId);
+        if(!StringUtils.isEmpty(authId)){
+            List<ClassInfo> classInfoList = classInfoMapper.selectByExample(classInfoExample);
+            return AjaxResult.success(classInfoList);
+        }
+        return AjaxResult.error("服务错误",new ArrayList<>());
+
+    }
+
+    @Override
+    public PageInfo fetchMineClass(Integer page, Integer limit, String fuzzy, String classCode) {
+        PageHelper.startPage(page,limit);
+        Student student = new Student();
+        if(!StringUtils.isEmpty(fuzzy)){
+            student.setFuzzy(fuzzy);
+        }
+        if(!StringUtils.isEmpty(classCode)){
+            student.setStudentClass(classCode);
+        }
+        List<Student> studentList = studentMapper.selectMineClassInfo(student);
+        return new PageInfo<>(studentList);
     }
 }

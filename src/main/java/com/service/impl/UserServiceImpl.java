@@ -46,6 +46,12 @@ public class UserServiceImpl implements UserService {
     @Resource
     TimeLineMapper timeLineMapper;
 
+    @Resource
+    SubjectMapper subjectMapper;
+
+    @Resource
+    CollegeMapper collegeMapper;
+
     @Override
     public AjaxResult login(String userName, String userPassword, HttpServletRequest request) {
         UserInfoExample userInfoExample = new UserInfoExample();
@@ -353,5 +359,46 @@ public class UserServiceImpl implements UserService {
             return AjaxResult.error("更新信息失败");
 
 
+    }
+
+    @Override
+    public AjaxResult getMineSubject(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String authId = (String) session.getAttribute(CommonConstant.SESSION_AUTH_ID);
+        StudentExample studentExample = new StudentExample();
+        studentExample.createCriteria().andStudentNumberEqualTo(authId);
+        List<Student> studentList = studentMapper.selectByExample(studentExample);
+        Student student = studentList.get(0);
+        if(!StringUtils.isEmpty(student.getSubjectId())){
+            SubjectExample subjectExample = new SubjectExample();
+            subjectExample.createCriteria().andIdEqualTo(student.getSubjectId());
+            List<Subject> subjectList = subjectMapper.selectByExample(subjectExample);
+            if(!CollectionUtils.isEmpty(subjectList)){
+                for (Subject s:subjectList
+                ) {
+                    if(s.getStatus().equals(CommonConstant.SUCCESS)){
+                        s.setStatusName("正常");
+                    }
+                    if(s.getStatus().equals(CommonConstant.STOP)){
+                        s.setStatusName("停止");
+                    }
+                    if(!com.util.StringUtils.isEmpty(s.getCollegeId())){
+                        String collegeName=collegeMapper.selectCollegeNameBycode(s.getCollegeId());
+                        s.setCollegeName(collegeName);
+                    }
+                    if(!StringUtils.isEmpty(s.getReleasePeople())){
+                        TeacherExample teacherExample = new TeacherExample();
+                        teacherExample.createCriteria().andTeacherNumberEqualTo(s.getReleasePeople());
+                        List<Teacher> teacherList = teacherMapper.selectByExample(teacherExample);
+                        s.setReleasePeopleName(teacherList.get(0).getTeacherName());
+                    }
+                }
+            }
+            if(!CollectionUtils.isEmpty(subjectList)){
+                return AjaxResult.success(subjectList.get(0));
+            }
+
+        }
+        return AjaxResult.success(new Subject());
     }
 }

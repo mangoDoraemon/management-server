@@ -26,4 +26,6 @@ public interface UserService {
     AjaxResult deleteUser(String id);
 
     AjaxResult modifyOwn(UserInfo userInfo, HttpServletRequest request);
+
+    AjaxResult getMineSubject(HttpServletRequest request);
 }

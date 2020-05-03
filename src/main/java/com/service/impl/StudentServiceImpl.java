@@ -1,10 +1,7 @@
 package com.service.impl;
 
 import com.constant.CommonConstant;
-import com.dao.ClassInfoMapper;
-import com.dao.CollegeMapper;
-import com.dao.RoleMapper;
-import com.dao.StudentMapper;
+import com.dao.*;
 import com.entity.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -16,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -37,6 +36,12 @@ public class StudentServiceImpl implements StudentService {
 
     @Resource
     CollegeMapper collegeMapper;
+
+    @Resource
+    SubjectMapper subjectMapper;
+
+    @Resource
+    TeacherMapper teacherMapper;
 
     @Override
     public PageInfo selectStudentInfoData(Integer page, Integer limit, String fuzzy, String studentNumber, String studentName) {
@@ -132,5 +137,65 @@ public class StudentServiceImpl implements StudentService {
                return AjaxResult.error("修改失败");
            }
 
+    }
+
+    @Override
+    public PageInfo fetchSubject(Integer page, Integer limit, String fuzzy, HttpServletRequest request) {
+        PageHelper.startPage(page,limit);
+        HttpSession session = request.getSession();
+        String authId = (String) session.getAttribute(CommonConstant.SESSION_AUTH_ID);
+        StudentExample studentExample = new StudentExample();
+        studentExample.createCriteria().andStudentNumberEqualTo(authId);
+        List<Student> studentList = studentMapper.selectByExample(studentExample);
+        Student student = studentList.get(0);
+        Subject subject = new Subject();
+        if(!StringUtils.isEmpty(fuzzy)){
+            subject.setFuzzy(fuzzy);
+        }
+        if(!StringUtils.isEmpty(student.getStudentCollege())){
+            subject.setCollegeId(student.getStudentCollege());
+        }
+        if(!StringUtils.isEmpty(student.getSubjectId())){
+            subject.setId(student.getSubjectId());
+        }
+        List<Subject> subjectList = studentMapper.selectSubject(subject);
+        if(!CollectionUtils.isEmpty(subjectList)){
+            for (Subject s:subjectList
+            ) {
+                if(s.getStatus().equals(CommonConstant.SUCCESS)){
+                    s.setStatusName("正常");
+                }
+                if(s.getStatus().equals(CommonConstant.STOP)){
+                    s.setStatusName("停止");
+                }
+                if(!StringUtils.isEmpty(s.getCollegeId())){
+                    String collegeName=collegeMapper.selectCollegeNameBycode(s.getCollegeId());
+                    s.setCollegeName(collegeName);
+                }
+                if(!org.apache.commons.lang.StringUtils.isEmpty(s.getReleasePeople())){
+                    TeacherExample teacherExample = new TeacherExample();
+                    teacherExample.createCriteria().andTeacherNumberEqualTo(s.getReleasePeople());
+                    List<Teacher> teacherList = teacherMapper.selectByExample(teacherExample);
+                    s.setReleasePeopleName(teacherList.get(0).getTeacherName());
+                }
+            }
+        }
+        return new PageInfo<>(subjectList);
+    }
+
+    @Override
+    public AjaxResult chooseSubject(String id, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String authId = (String) session.getAttribute(CommonConstant.SESSION_AUTH_ID);
+        StudentExample studentExample = new StudentExample();
+        studentExample.createCriteria().andStudentNumberEqualTo(authId);
+        List<Student> studentList = studentMapper.selectByExample(studentExample);
+        Student student = studentList.get(0);
+        if(!StringUtils.isEmpty(id)){
+            student.setSubjectId(id);
+            studentMapper.updateByExampleSelective(student,studentExample);
+            return AjaxResult.success("选择课题成功");
+        }
+        return AjaxResult.error("服务器错误");
     }
 }
