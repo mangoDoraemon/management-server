@@ -238,8 +238,14 @@
       </if>
 
     </select>
+    <select id="selectSubjectById" resultType="java.lang.String">
+      select subject_name from subject_info where id=#{subjectId}
+    </select>
+  <select id="selectStudentInfoDict" resultType="com.entity.Student">
+   select * from student_info where subject_id is null or subject_id =" "
+  </select>
 
-    <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map" >
     update student_info
     <set >
       <if test="record.id != null" >

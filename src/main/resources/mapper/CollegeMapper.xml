@@ -224,8 +224,11 @@
 	c.college_code
 
   </select>
+    <select id="selectCollegeNameBycode" resultType="java.lang.String">
+      select college_name from college_info where college_code=#{collegeId}
+    </select>
 
-  <update id="updateByExampleSelective" parameterType="map" >
+    <update id="updateByExampleSelective" parameterType="map" >
     update college_info
     <set >
       <if test="record.id != null" >

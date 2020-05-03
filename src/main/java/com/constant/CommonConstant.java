@@ -25,5 +25,7 @@ public class CommonConstant {
     public static final String ADMIN_ROLE = "admin";
     public static final String NOTICE_PUBLISHED = "published";
     public static final String NOTICE_DRAFT = "draft";
+    public static final String SUCCESS = "success";
+    public static final String STOP = "stop";
 
 }

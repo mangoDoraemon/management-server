@@ -22,4 +22,8 @@ public interface SubjectMapper {
     int updateByExampleSelective(@Param("record") Subject record, @Param("example") SubjectExample example);
 
     int updateByExample(@Param("record") Subject record, @Param("example") SubjectExample example);
+
+    List<Subject> selectOwnData(Subject subject);
+
+    Subject selectSubjectById(String id);
 }

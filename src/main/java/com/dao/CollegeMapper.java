@@ -29,4 +29,6 @@ public interface CollegeMapper {
     List<College> getCollegeDict();
 
     List<College> getChartInfo();
+
+    String selectCollegeNameBycode(String collegeId);
 }

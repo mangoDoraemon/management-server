@@ -53,9 +53,11 @@ public class TeacherController {
      * @return
      */
     @GetMapping("/fetchMineStudent")
-    public PageInfo fetchMineStudent(@RequestParam(required = false, defaultValue = "1") Integer page, @RequestParam(required = false, defaultValue = "10") Integer limit, @RequestParam(required = false) String fuzzy,
+    public PageInfo fetchMineStudent(@RequestParam(required = false, defaultValue = "1") Integer page, @RequestParam(required = false, defaultValue = "10") Integer limit,
+                                     @RequestParam(required = false) String subjectId,
+                                     @RequestParam(required = false) String fuzzy,
                               @RequestParam(required = false) String studentNumber, @RequestParam(required = false) String studentName){
-        return teacherService.fetchMineStudent(page,limit,fuzzy,studentNumber,studentName);
+        return teacherService.fetchMineStudent(page,limit,subjectId,fuzzy,studentNumber,studentName);
     }
 
 }

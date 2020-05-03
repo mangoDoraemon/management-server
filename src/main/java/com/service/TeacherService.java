@@ -17,5 +17,5 @@ public interface TeacherService {
 
     AjaxResult deleteData(String id);
 
-    PageInfo fetchMineStudent(Integer page, Integer limit, String fuzzy, String studentNumber, String studentName);
+    PageInfo fetchMineStudent(Integer page, Integer limit,String subjectId, String fuzzy, String studentNumber, String studentName);
 }

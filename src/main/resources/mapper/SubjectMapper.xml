@@ -11,6 +11,11 @@
     <result column="status" property="status" jdbcType="VARCHAR" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="release_time" property="releaseTime" jdbcType="TIMESTAMP" />
+    <result column="start_time" property="startTime" jdbcType="VARCHAR" />
+    <result column="end_time" property="endTime" jdbcType="VARCHAR" />
+    <result column="subject_type" property="subjectType" jdbcType="VARCHAR" />
+    <result column="manage_time" property="manageTime" jdbcType="VARCHAR" />
+    <result column="manage_user" property="manageUser" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -72,7 +77,7 @@
   </sql>
   <sql id="Base_Column_List" >
     id, subject_name, release_people, college_id, subject_content, subject_number, status, 
-    remark, release_time
+    remark, release_time, start_time, end_time, subject_type, manage_time, manage_user
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.entity.SubjectExample" >
     select
@@ -97,12 +102,14 @@
   <insert id="insert" parameterType="com.entity.Subject" >
     insert into subject_info (id, subject_name, release_people, 
       college_id, subject_content, subject_number, 
-      status, remark, release_time
-      )
+      status, remark, release_time, 
+      start_time, end_time, subject_type, 
+      manage_time, manage_user)
     values (#{id,jdbcType=VARCHAR}, #{subjectName,jdbcType=VARCHAR}, #{releasePeople,jdbcType=VARCHAR}, 
       #{collegeId,jdbcType=VARCHAR}, #{subjectContent,jdbcType=VARCHAR}, #{subjectNumber,jdbcType=INTEGER}, 
-      #{status,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{releaseTime,jdbcType=TIMESTAMP}
-      )
+      #{status,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{releaseTime,jdbcType=TIMESTAMP}, 
+      #{startTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}, #{subjectType,jdbcType=VARCHAR}, 
+      #{manageTime,jdbcType=VARCHAR}, #{manageUser,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.entity.Subject" >
     insert into subject_info
@@ -134,6 +141,21 @@
       <if test="releaseTime != null" >
         release_time,
       </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="subjectType != null" >
+        subject_type,
+      </if>
+      <if test="manageTime != null" >
+        manage_time,
+      </if>
+      <if test="manageUser != null" >
+        manage_user,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -163,6 +185,21 @@
       <if test="releaseTime != null" >
         #{releaseTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectType != null" >
+        #{subjectType,jdbcType=VARCHAR},
+      </if>
+      <if test="manageTime != null" >
+        #{manageTime,jdbcType=VARCHAR},
+      </if>
+      <if test="manageUser != null" >
+        #{manageUser,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.entity.SubjectExample" resultType="java.lang.Integer" >
@@ -171,6 +208,38 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+  <select id="selectOwnData" resultType="com.entity.Subject">
+     select
+     s.*,
+     count(t.id) as totalNumber
+     from
+     subject_info s
+     left join student_info t on s.id = t.subject_id
+     <where>
+       <if test="fuzzy !=null and fuzzy!=''">
+         and s.subject_name LIKE concat(concat('%',#{fuzzy}),'%')
+         or s.subject_content LIKE concat(concat('%',#{fuzzy}),'%')
+         or s.remark LIKE concat(concat('%',#{fuzzy}),'%')
+       </if>
+
+       <if test="authId != null and authId !='' ">
+       and s.release_people = #{authId}
+       </if>
+     </where>
+      GROUP BY s.id
+  </select>
+
+  <select id="selectSubjectById" parameterType="string" resultType="com.entity.Subject">
+     select
+     s.*,
+     count(t.id) as totalNumber
+     from
+     subject_info s
+     left join student_info t on s.id = t.subject_id
+     where s.id = #{id}
+     GROUP BY s.id
+  </select>
+
   <update id="updateByExampleSelective" parameterType="map" >
     update subject_info
     <set >
@@ -201,6 +270,21 @@
       <if test="record.releaseTime != null" >
         release_time = #{record.releaseTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.startTime != null" >
+        start_time = #{record.startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.endTime != null" >
+        end_time = #{record.endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subjectType != null" >
+        subject_type = #{record.subjectType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.manageTime != null" >
+        manage_time = #{record.manageTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.manageUser != null" >
+        manage_user = #{record.manageUser,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -216,7 +300,12 @@
       subject_number = #{record.subjectNumber,jdbcType=INTEGER},
       status = #{record.status,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
-      release_time = #{record.releaseTime,jdbcType=TIMESTAMP}
+      release_time = #{record.releaseTime,jdbcType=TIMESTAMP},
+      start_time = #{record.startTime,jdbcType=VARCHAR},
+      end_time = #{record.endTime,jdbcType=VARCHAR},
+      subject_type = #{record.subjectType,jdbcType=VARCHAR},
+      manage_time = #{record.manageTime,jdbcType=VARCHAR},
+      manage_user = #{record.manageUser,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>

@@ -236,9 +236,9 @@
         notice_info n
         where (n.status !='draft')
       <if test="fuzzy !=null and fuzzy!=''">
-        and notice_title LIKE concat(concat('%',#{fuzzy}),'%')
-        or notice_content LIKE concat(concat('%',#{fuzzy}),'%')
-        or manage_user LIKE concat(concat('%',#{fuzzy}),'%')
+        and n.notice_title LIKE concat(concat('%',#{fuzzy}),'%')
+        or n.notice_content LIKE concat(concat('%',#{fuzzy}),'%')
+        or n.manage_user LIKE concat(concat('%',#{fuzzy}),'%')
       </if>
 
     </select>

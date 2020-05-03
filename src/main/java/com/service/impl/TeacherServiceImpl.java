@@ -137,8 +137,23 @@ public class TeacherServiceImpl implements TeacherService {
 
     }
 
+
     @Override
-    public PageInfo fetchMineStudent(Integer page, Integer limit, String fuzzy, String studentNumber, String studentName) {
+    public PageInfo fetchMineStudent(Integer page, Integer limit, String subjectId,String fuzzy, String studentNumber, String studentName) {
+        PageHelper.startPage(page,limit);
+        Student student = new Student();
+        if(!StringUtils.isEmpty(subjectId)){
+            student.setSubjectId(subjectId);
+        }
+        if(!StringUtils.isEmpty(fuzzy)){
+            student.setFuzzy(fuzzy);
+        }
+        if(!StringUtils.isEmpty(studentNumber)){
+            student.setStudentNumber(studentNumber);
+        }
+        if(!StringUtils.isEmpty(studentName)){
+            student.setStudentName(studentName);
+        }
         return null;
     }
 }

@@ -24,4 +24,8 @@ public interface StudentMapper {
     int updateByExample(@Param("record") Student record, @Param("example") StudentExample example);
 
     List<Student> selectStudentInfoAll(Student student);
+
+    String selectSubjectById(String subjectId);
+
+    List<Student> selectStudentInfoDict();
 }

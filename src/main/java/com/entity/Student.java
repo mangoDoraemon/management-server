@@ -53,6 +53,9 @@ public class Student implements Serializable {
     @Transient
     private String collegeName;
 
+    @Transient
+    private String subjectName;
+
     public String getId() {
         return id;
     }
@@ -195,5 +198,13 @@ public class Student implements Serializable {
 
     public void setCollegeName(String collegeName) {
         this.collegeName = collegeName;
+    }
+
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
     }
 }

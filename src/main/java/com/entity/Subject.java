@@ -1,8 +1,20 @@
 package com.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.io.Serializable;
 import java.util.Date;
 
-public class Subject {
+
+@Entity
+@Table( name ="subject_info" )
+public class Subject implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
     private String id;
 
     private String subjectName;
@@ -20,6 +32,31 @@ public class Subject {
     private String remark;
 
     private Date releaseTime;
+
+    private String startTime;
+
+    private String endTime;
+
+    private String subjectType;
+
+    private String manageTime;
+
+    private String manageUser;
+
+    @Transient
+    private  String fuzzy;
+
+    @Transient
+    private String authId;
+
+    @Transient
+    private String collegeName;
+
+    @Transient
+    private String statusName;
+
+    @Transient
+    private String totalNumber;
 
     public String getId() {
         return id;
@@ -91,5 +128,85 @@ public class Subject {
 
     public void setReleaseTime(Date releaseTime) {
         this.releaseTime = releaseTime;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime == null ? null : startTime.trim();
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime == null ? null : endTime.trim();
+    }
+
+    public String getSubjectType() {
+        return subjectType;
+    }
+
+    public void setSubjectType(String subjectType) {
+        this.subjectType = subjectType == null ? null : subjectType.trim();
+    }
+
+    public String getManageTime() {
+        return manageTime;
+    }
+
+    public void setManageTime(String manageTime) {
+        this.manageTime = manageTime == null ? null : manageTime.trim();
+    }
+
+    public String getManageUser() {
+        return manageUser;
+    }
+
+    public void setManageUser(String manageUser) {
+        this.manageUser = manageUser == null ? null : manageUser.trim();
+    }
+
+    public String getFuzzy() {
+        return fuzzy;
+    }
+
+    public void setFuzzy(String fuzzy) {
+        this.fuzzy = fuzzy;
+    }
+
+    public String getAuthId() {
+        return authId;
+    }
+
+    public void setAuthId(String authId) {
+        this.authId = authId;
+    }
+
+    public String getCollegeName() {
+        return collegeName;
+    }
+
+    public void setCollegeName(String collegeName) {
+        this.collegeName = collegeName;
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
+
+    public String getTotalNumber() {
+        return totalNumber;
+    }
+
+    public void setTotalNumber(String totalNumber) {
+        this.totalNumber = totalNumber;
     }
 }

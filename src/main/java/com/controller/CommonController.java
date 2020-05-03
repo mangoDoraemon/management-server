@@ -4,6 +4,7 @@ import com.config.Global;
 import com.constant.CommonConstant;
 import com.dao.ClassInfoMapper;
 import com.dao.CollegeMapper;
+import com.dao.StudentMapper;
 import com.dao.TeacherMapper;
 import com.entity.*;
 import com.util.AjaxResult;
@@ -36,6 +37,9 @@ public class CommonController {
 
     @Resource
     private TeacherMapper teacherMapper;
+
+    @Resource
+    private StudentMapper studentMapper;
 
     private static Logger logger = LoggerFactory.getLogger(CommonController.class);
 
@@ -94,6 +98,17 @@ public class CommonController {
     public AjaxResult getTeacherInfoDict(){
         List<Teacher> teacherList = teacherMapper.getTeacherInfoDict();
         return AjaxResult.success(teacherList);
+    }
+
+    /**
+     * 获取没有选择可以的学生信息
+     * @return
+     */
+    @GetMapping("/common/studentInfoDict")
+    public AjaxResult getStudentInfoDict(){
+
+        List<Student> studentList = studentMapper.selectStudentInfoDict();
+        return AjaxResult.success(studentList);
     }
 
     @GetMapping("/common/getChartInfo")
